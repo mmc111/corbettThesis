@@ -16,6 +16,11 @@
 		D4115FC21C20AAE50088B14C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D4115FC01C20AAE50088B14C /* LaunchScreen.storyboard */; };
 		D4115FCD1C20AAE50088B14C /* MathGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4115FCC1C20AAE50088B14C /* MathGameTests.swift */; };
 		D4115FD81C20AAE50088B14C /* MathGameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4115FD71C20AAE50088B14C /* MathGameUITests.swift */; };
+		D4115FE61C20B3A70088B14C /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4115FE51C20B3A70088B14C /* Number.swift */; };
+		D4115FE81C20BF0A0088B14C /* GameGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4115FE71C20BF0A0088B14C /* GameGrid.swift */; };
+		D4115FEA1C20C2300088B14C /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4115FE91C20C2300088B14C /* Level.swift */; };
+		D4115FEC1C20C5670088B14C /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4115FEB1C20C5660088B14C /* Equation.swift */; };
+		D41160001C21A2EB0088B14C /* Sprites.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D4115FFF1C21A2EB0088B14C /* Sprites.atlas */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +56,11 @@
 		D4115FD31C20AAE50088B14C /* MathGameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MathGameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4115FD71C20AAE50088B14C /* MathGameUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathGameUITests.swift; sourceTree = "<group>"; };
 		D4115FD91C20AAE50088B14C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D4115FE51C20B3A70088B14C /* Number.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
+		D4115FE71C20BF0A0088B14C /* GameGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameGrid.swift; sourceTree = "<group>"; };
+		D4115FE91C20C2300088B14C /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
+		D4115FEB1C20C5660088B14C /* Equation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equation.swift; sourceTree = "<group>"; };
+		D4115FFF1C21A2EB0088B14C /* Sprites.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Sprites.atlas; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,7 +116,12 @@
 				D4115FB71C20AAE50088B14C /* GameScene.swift */,
 				D4115FB91C20AAE50088B14C /* GameViewController.swift */,
 				D4115FBB1C20AAE50088B14C /* Main.storyboard */,
+				D4115FFF1C21A2EB0088B14C /* Sprites.atlas */,
 				D4115FBE1C20AAE50088B14C /* Assets.xcassets */,
+				D4115FE51C20B3A70088B14C /* Number.swift */,
+				D4115FE91C20C2300088B14C /* Level.swift */,
+				D4115FEB1C20C5660088B14C /* Equation.swift */,
+				D4115FE71C20BF0A0088B14C /* GameGrid.swift */,
 				D4115FC01C20AAE50088B14C /* LaunchScreen.storyboard */,
 				D4115FC31C20AAE50088B14C /* Info.plist */,
 			);
@@ -193,6 +208,7 @@
 		D4115FA81C20AAE50088B14C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0730;
 				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Megan Corbett";
@@ -239,6 +255,7 @@
 				D4115FC21C20AAE50088B14C /* LaunchScreen.storyboard in Resources */,
 				D4115FBF1C20AAE50088B14C /* Assets.xcassets in Resources */,
 				D4115FBD1C20AAE50088B14C /* Main.storyboard in Resources */,
+				D41160001C21A2EB0088B14C /* Sprites.atlas in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,7 +280,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4115FEA1C20C2300088B14C /* Level.swift in Sources */,
+				D4115FE61C20B3A70088B14C /* Number.swift in Sources */,
 				D4115FB81C20AAE50088B14C /* GameScene.swift in Sources */,
+				D4115FEC1C20C5670088B14C /* Equation.swift in Sources */,
+				D4115FE81C20BF0A0088B14C /* GameGrid.swift in Sources */,
 				D4115FBA1C20AAE50088B14C /* GameViewController.swift in Sources */,
 				D4115FB41C20AAE50088B14C /* AppDelegate.swift in Sources */,
 			);
@@ -494,6 +515,7 @@
 				D4115FDE1C20AAE50088B14C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D4115FDF1C20AAE50088B14C /* Build configuration list for PBXNativeTarget "MathGameTests" */ = {
 			isa = XCConfigurationList;
@@ -502,6 +524,7 @@
 				D4115FE11C20AAE50088B14C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D4115FE21C20AAE50088B14C /* Build configuration list for PBXNativeTarget "MathGameUITests" */ = {
 			isa = XCConfigurationList;
@@ -510,6 +533,7 @@
 				D4115FE41C20AAE50088B14C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
