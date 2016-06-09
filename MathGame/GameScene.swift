@@ -107,12 +107,14 @@ class GameScene: SKScene {
                 if level.numAtCol(col, row: row) != prevNum && col > prevNum?.col {
                 //numbersTouched.append(level.numAtCol(col, row: row)
                     if numbersTouched.count == 1 {
-                        print("array size: \(numbersTouched.count), num = \(numbersTouched.last?.value)", terminator: "")
+                        print("array size: \(numbersTouched.count), num = \(numbersTouched.last?.value)")
+                        print(" ")
                         
                     }
                     numbersTouched.append(num!)
                     //terminator appends instead of new line
-                    print("array size: \(numbersTouched.count), num = \(numbersTouched.last?.value)", terminator: "")
+                    print("array size: \(numbersTouched.count), num = \(numbersTouched.last?.value)")
+                    print(" ")
                     
                 }
             }
@@ -124,7 +126,7 @@ class GameScene: SKScene {
         //convert touch location to point relative to cookiesLayer
         let touch = touches.first
         let location = touch!.locationInNode(numberLayer)
-        //print("in touches began")
+        
         //find out if touch is inside a square on the level grid (basically user put finger somewhere inside grid)
         let(success, col, row) = convertPoint(location)
    
@@ -155,7 +157,8 @@ class GameScene: SKScene {
         
         
         if let sprite = num.sprite {
-            if num.numberType != NumberType.Operator {
+           // if num.numberType != NumberType.Operator {
+            if num.numberType.rawValue < 3 {
             let texture = SKTexture(imageNamed: num.highlightedSpriteName)
             selectionSprite.size = texture.size()
                 selectionSprite.runAction(SKAction.setTexture(texture))
@@ -177,7 +180,8 @@ class GameScene: SKScene {
     //func animateCorrectEquation(completion: () -> ())
     func animateCorrectEquation() {
         for num in numbersTouched {
-            if num.numberType != NumberType.Operator{
+            //if num.numberType != NumberType.Operator{
+            if num.numberType.rawValue < 3 {
                 if let sprite = num.sprite {
                     if sprite.actionForKey("removing") == nil {
                         let scaleAction = SKAction.scaleTo(0.1, duration: 1.5)
@@ -196,13 +200,12 @@ class GameScene: SKScene {
     
     func animateNumberDrop(col: [[Number]], completion: () -> ()) {
        
-        
+        //needs to happen after incorrect and after x amount of time has passed (tracked via timer)
         //need to compute duration because of varying number of numbers dropping
         var longestDuration: NSTimeInterval = 0
 
         for array in col {
             for (idx, number) in array.enumerate() {
-                print("in enumerate for")
                 
                 let newPosition = pointForColumn(number.col, row: number.row)
                 let delay = 0.05 + 0.15*NSTimeInterval(idx)
@@ -214,7 +217,7 @@ class GameScene: SKScene {
                 //perform animation (delay + movement)
                 let moveAction = SKAction.moveTo(newPosition, duration: duration)
                 moveAction.timingMode = .EaseOut
-                print("before run action")
+                
                 sprite.runAction(
                     SKAction.sequence([
                         SKAction.waitForDuration(delay),

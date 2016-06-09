@@ -10,7 +10,7 @@ import Foundation
 import SpriteKit
 
 enum NumberType: Int {
-    case unknown = 0, Operand, Result, Operator
+    case unknown = 0, Operand, Result, AddOperator, SubOperator, MultOperator, DivOperator
     
 }
 
@@ -34,15 +34,39 @@ class Number: CustomStringConvertible, Hashable {
         
         self.numberType = numberType
         
-        if numberType.rawValue == 1 {
+        switch numberType.rawValue {
+        case 1:
+            spriteName = "\(value)"
+        case 2:
+            spriteName = "\(value)Result"
+        case 3:
+            spriteName = "AddOp"
+        case 4:
+            //spriteName = "SubOp"
+            spriteName = "AddOp"
+        case 5:
+            spriteName = "MultOp"
+        case 6:
+            spriteName = "DivOp"
+        default:
+            spriteName = "null"
+        }
+        
+        /*if numberType.rawValue == 1 {
             spriteName = "\(value)"
         } else if numberType.rawValue == 2 {
             spriteName = "\(value)Result"
-        } else if numberType.rawValue == 3{
+        } else if numberType.rawValue == 3 {
             spriteName = "AddOp"
+        } else if numberType.rawValue == 4 {
+            spriteName = "SubOp"
+        } else if numberType.rawValue == 5 {
+            spriteName = "MultOp"
+        } else if numberType.rawValue == 6 {
+            spriteName = "DivOp"
         } else {
             spriteName = "null"
-        }
+        }*/
         
         highlightedSpriteName = spriteName + "-Highlighted"
       
