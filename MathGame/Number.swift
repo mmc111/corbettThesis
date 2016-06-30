@@ -42,8 +42,8 @@ class Number: CustomStringConvertible, Hashable {
         case 3:
             spriteName = "AddOp"
         case 4:
-            //spriteName = "SubOp"
-            spriteName = "AddOp"
+            spriteName = "SubOp"
+            //spriteName = "AddOp"
         case 5:
             spriteName = "MultOp"
         case 6:
@@ -52,21 +52,6 @@ class Number: CustomStringConvertible, Hashable {
             spriteName = "null"
         }
         
-        /*if numberType.rawValue == 1 {
-            spriteName = "\(value)"
-        } else if numberType.rawValue == 2 {
-            spriteName = "\(value)Result"
-        } else if numberType.rawValue == 3 {
-            spriteName = "AddOp"
-        } else if numberType.rawValue == 4 {
-            spriteName = "SubOp"
-        } else if numberType.rawValue == 5 {
-            spriteName = "MultOp"
-        } else if numberType.rawValue == 6 {
-            spriteName = "DivOp"
-        } else {
-            spriteName = "null"
-        }*/
         
         highlightedSpriteName = spriteName + "-Highlighted"
       

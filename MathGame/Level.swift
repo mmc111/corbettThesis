@@ -5,6 +5,8 @@
 //  Created by Megan Corbett
 //  Copyright © 2015 Megan Corbett. All rights reserved.
 
+
+
 //////practice mode without timer
 //****fractions
 //mathletics
@@ -15,8 +17,8 @@ import Foundation
 //define dimensions of game grid
 let NumCol = 7
 let NumRow = 10
-
-var levelNum: Int = -2 //testing subtraction
+var levelNum: Int = -1 //testing addition
+//var levelNum: Int = -2 //testing subtraction
 var score: Int = 0
 
 var currentRowsFilled = 0
@@ -345,8 +347,7 @@ class Level {
     
     func removeNumbers(numbersToRemove: Array<Number>) {
         for num in numbersToRemove {
-            //if num.numberType != NumberType.Operator {  //don't remove operator from grid
-            if num.numberType.rawValue > 2 {  //don't remove operator from grid
+            if num.numberType.rawValue < 3 {  //don't remove operator from grid
                numbers[num.col, num.row] = nil
                 //print("number removed from grid", terminator: "")
             }
@@ -354,5 +355,5 @@ class Level {
         }
     }
     
-    }
+}
 

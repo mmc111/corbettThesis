@@ -157,8 +157,8 @@ class GameScene: SKScene {
         
         
         if let sprite = num.sprite {
-           // if num.numberType != NumberType.Operator {
-            if num.numberType.rawValue < 3 {
+         //   if num.numberType != NumberType.Operator {
+            if num.numberType.rawValue <= 3 {
             let texture = SKTexture(imageNamed: num.highlightedSpriteName)
             selectionSprite.size = texture.size()
                 selectionSprite.runAction(SKAction.setTexture(texture))
@@ -181,7 +181,7 @@ class GameScene: SKScene {
     func animateCorrectEquation() {
         for num in numbersTouched {
             //if num.numberType != NumberType.Operator{
-            if num.numberType.rawValue < 3 {
+            if num.numberType.rawValue < 3 { //remove from board if its not the operator
                 if let sprite = num.sprite {
                     if sprite.actionForKey("removing") == nil {
                         let scaleAction = SKAction.scaleTo(0.1, duration: 1.5)
@@ -259,48 +259,4 @@ class GameScene: SKScene {
         }
     
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //original code in class
-   /* override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
-        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Hello, World!";
-        myLabel.fontSize = 45;
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
-        
-        self.addChild(myLabel)
-    }
-    
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-       /* Called when a touch begins */
-        
-        for touch in touches {
-            let location = touch.locationInNode(self)
-            
-            let sprite = SKSpriteNode(imageNamed:"Spaceship")
-            
-            sprite.xScale = 0.5
-            sprite.yScale = 0.5
-            sprite.position = location
-            
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-            
-            sprite.runAction(SKAction.repeatActionForever(action))
-            
-            self.addChild(sprite)
-        }
-    }
-   
-    override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
-    }*/
 }
