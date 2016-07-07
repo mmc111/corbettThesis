@@ -21,10 +21,10 @@
                                 <rect key="frame" x="20" y="448" width="719" height="228"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="0iX-QR-53l">
-                                <rect key="frame" x="595" y="267" width="50" height="23"/>
+                                <rect key="frame" x="595" y="267" width="79" height="23"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Timer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MXg-I3-yro">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="23"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Timer: 30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MXg-I3-yro">
+                                        <rect key="frame" x="0.0" y="0.0" width="79" height="23"/>
                                         <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -87,6 +87,7 @@
                         <outlet property="gameOverLabel" destination="cI3-aT-9dr" id="JpF-PE-OWY"/>
                         <outlet property="gameOverPanel" destination="9dH-TA-VS1" id="h3R-cd-vNg"/>
                         <outlet property="scoreLabel" destination="6TO-TO-YFw" id="t6s-EP-nVA"/>
+                        <outlet property="timerLabel" destination="MXg-I3-yro" id="A0J-g3-1Fj"/>
                         <outlet property="winningLabel" destination="lOP-Ps-UPC" id="J3l-lW-0rS"/>
                     </connections>
                 </viewController>

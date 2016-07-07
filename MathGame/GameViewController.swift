@@ -18,12 +18,19 @@ class GameViewController: UIViewController {
     var score = 0
     var correct = 0
     
+    var seconds = 0
+    var maxSeconds = 20
+    var dropSeconds = 5
+    var timer = NSTimer()
+    
     @IBOutlet weak var correctLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var gameOverPanel: UIImageView!
     
     @IBOutlet weak var gameOverLabel: UILabel!
     @IBOutlet weak var winningLabel: UILabel!
+    
+    @IBOutlet var timerLabel: UILabel!
     
     var tapGestureRecognizer: UITapGestureRecognizer!
     
@@ -72,9 +79,50 @@ class GameViewController: UIViewController {
         winningLabel.hidden = true
         score = 0
         correct = 0
+        seconds = 0
+        
+        timerLabel.text = "Time: \(seconds)"
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(GameViewController.addTime), userInfo: nil, repeats: true)
+        
         updateLabels()
+        
         let initEquations = level.firstFill()
         scene.addSpritesForNumbers(initEquations)
+    }
+    
+    //function to reset/update board after gameplay has begun, call in viewDidLoad()
+    func startNewChallenge() {
+        //need to implement change in difficulty or level type here (dependent upon game progress)
+        gameOverLabel.hidden = true
+        winningLabel.hidden = true
+        //keep score
+        correct = 0
+        seconds = 0
+        timerLabel.text = "Time: \(seconds)"
+        updateLabels()
+        
+        //reset equations tables and game grid ***** need to fix this
+        let initEquations = level.firstFill()
+        scene.addSpritesForNumbers(initEquations)
+    }
+    
+    func addTime() {
+        seconds = seconds + 1
+        timerLabel.text = "Time: \(seconds)"
+        
+        //can impose time limit here
+        if(seconds%dropSeconds == 0 && seconds > 0)
+        {
+            let newSet = level.addNewRow()
+            self.scene.animateNewDrop(newSet)
+        }
+        if(seconds == maxSeconds) {
+            timer.invalidate()
+            //game is over
+            gameOverPanel.image = UIImage(named: "GameOver")
+            gameOverLabel.hidden = false
+            showGameOver()
+        }
     }
     
     func updateLabels() {
@@ -85,6 +133,16 @@ class GameViewController: UIViewController {
     }
     
     func showGameOver() {
+        //stop timer
+        
+        timer.invalidate()
+        
+        //add time bonus
+        if(winningLabel.hidden == false){
+            score = score + (seconds*5)
+        }
+        
+        updateLabels()
         gameOverPanel.hidden = false
         scene.userInteractionEnabled = false
         
@@ -92,8 +150,6 @@ class GameViewController: UIViewController {
         self.tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.hideGameOver))
         view.addGestureRecognizer(tapGestureRecognizer)
         
-        //show labels for now
-        //gameOverLabel.hidden = false
         
     }
     
@@ -105,7 +161,26 @@ class GameViewController: UIViewController {
         gameOverLabel.hidden = true
         winningLabel.hidden = true
         scene.userInteractionEnabled = true
-        beginGame()
+        //beginGame()
+        //set new challenge/difficulty
+        if(level.getCurrentRowsFilled() == 0)
+        {
+            //call to create a new challenge - this will be level change
+            startNewChallenge()
+        }
+        /*else if(score >= 40) {
+            //increase difficulty level
+        }*/
+        else {
+            //repeat same level ************** need to fix this for future levels
+            //need to remove all equations from board
+            
+            scene.animateClearBoard()
+            
+            level.clearBoard(numbersToClear)
+
+            beginGame()
+        }
     }
     
     func handleSwipe(numbers: Array<Number>)
@@ -140,12 +215,23 @@ class GameViewController: UIViewController {
             
             //if score is high enough, level is passed show game over panel
             if score == 40 {
+                /*gameOverPanel.image = UIImage(named: "difficulty increased")
+                winningLabel.hidden = false
+                showGameOver()*/
+                //////change difficulty here dynamically
+            }
+            
+            //allow user to continue until drops to zero equations on board
+            
+            //let newSet = level.addNewRow()
+            //self.scene.animateNewDrop(newSet)
+            
+            if level.getCurrentRowsFilled() == 0 {
+                //beat this challenge, reset bored
                 gameOverPanel.image = UIImage(named: "difficulty increased")
                 winningLabel.hidden = false
                 showGameOver()
             }
-            let newSet = level.addNewRow()
-            self.scene.animateNewDrop(newSet)
             
             
         } else {
@@ -154,12 +240,17 @@ class GameViewController: UIViewController {
             self.scene.animateNewDrop(newSet)
             //logic to show game over goes here
             //need to know if rows are greater than the number that can be displayed
+            
+            //fixed mindset
             if level.getCurrentRowsFilled() >= 7 {
                 //game is over
                 gameOverPanel.image = UIImage(named: "GameOver")
                 gameOverLabel.hidden = false
                 showGameOver()
             }
+            
+            //OR growth mindset - allow user to make a certain number of attmepts, reward for different attempts, then revert back to previous difficulty
+            //shuffle after each subsequent attempt until max attempts is reached, then revert
             
         }
         

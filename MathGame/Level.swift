@@ -23,6 +23,8 @@ var score: Int = 0
 
 var currentRowsFilled = 0
 
+var numbersToClear = [Number]()
+
 class Level {
     
     //var levelNumber: Int = 0
@@ -344,7 +346,15 @@ class Level {
             return false
         }
     }
-    
+    func clearBoard (numbersToRemove: Array<Number>) {
+        for num in numbersToRemove {
+            if num.numberType.rawValue < 3 {  //don't remove operator from grid
+                numbers[num.col, num.row] = nil
+                //print("number removed from grid", terminator: "")
+            }
+        }
+        
+    }
     func removeNumbers(numbersToRemove: Array<Number>) {
         for num in numbersToRemove {
             if num.numberType.rawValue < 3 {  //don't remove operator from grid

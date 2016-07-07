@@ -26,6 +26,7 @@ class GameScene: SKScene {
     var swipeFromRow: Int?
     
     var numbersTouched = [Number]()
+    var numbersToClear = [Number]()
     
     var selectionSprite = SKSpriteNode()
     
@@ -180,6 +181,39 @@ class GameScene: SKScene {
     //func animateCorrectEquation(completion: () -> ())
     func animateCorrectEquation() {
         for num in numbersTouched {
+            //if num.numberType != NumberType.Operator{
+            if num.numberType.rawValue < 3 { //remove from board if its not the operator
+                if let sprite = num.sprite {
+                    if sprite.actionForKey("removing") == nil {
+                        let scaleAction = SKAction.scaleTo(0.1, duration: 1.5)
+                        scaleAction.timingMode = .EaseOut
+                        sprite.runAction(SKAction.sequence([scaleAction, SKAction.removeFromParent()]), withKey:"removing")
+                    }
+                }
+            }
+        }
+    }
+    
+    func clearSprites() {
+        
+        numbersToClear.removeAll()
+        for row in 0..<level.getCurrentRowsFilled() {
+            
+            for col in 0..<7 {
+                if col != 1 && col != 2 && col != 3 && col != 5 {
+                if level.containsNumber(col, row: row) { ////*****need to fix this line, not returning properly
+                    numbersToClear.append((level.numAtCol(col, row: row))!)
+                }
+                }
+
+            }
+        }
+
+    }
+    
+    func animateClearBoard() {
+        clearSprites()
+        for num in numbersToClear {
             //if num.numberType != NumberType.Operator{
             if num.numberType.rawValue < 3 { //remove from board if its not the operator
                 if let sprite = num.sprite {
