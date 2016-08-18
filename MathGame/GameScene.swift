@@ -107,15 +107,15 @@ class GameScene: SKScene {
                 
                 if level.numAtCol(col, row: row) != prevNum && col > prevNum?.col {
                 //numbersTouched.append(level.numAtCol(col, row: row)
-                    if numbersTouched.count == 1 {
-                        print("array size: \(numbersTouched.count), num = \(numbersTouched.last?.value)")
-                        print(" ")
+                    /*if numbersTouched.count == 1 {
+                        //print("array size: \(numbersTouched.count), num = \(numbersTouched.last?.value)")
+                        //print(" ")
                         
-                    }
+                    }*/
                     numbersTouched.append(num!)
                     //terminator appends instead of new line
-                    print("array size: \(numbersTouched.count), num = \(numbersTouched.last?.value)")
-                    print(" ")
+                    //print("array size: \(numbersTouched.count), num = \(numbersTouched.last?.value)")
+                    //print(" ")
                     
                 }
             }
@@ -196,26 +196,30 @@ class GameScene: SKScene {
     
     func clearSprites() {
         
-        numbersToClear.removeAll()
-        for row in 0..<level.getCurrentRowsFilled() {
+        for row in 0..<10 {
             
             for col in 0..<7 {
                 if col != 1 && col != 2 && col != 3 && col != 5 {
-                if level.containsNumber(col, row: row) { ////*****need to fix this line, not returning properly
-                    numbersToClear.append((level.numAtCol(col, row: row))!)
+                    if level.containsNumber(col, row: row) {
+                        print("[ \(col), \(row)] : \(level.containsNumber(col, row: row))")
+                        numbersToClear.append((level.numAtCol(col, row: row))!)
                 }
-                }
+            }
 
             }
         }
 
+        
     }
+    /*func getNumbersToClear() -> [Number] {
+        return numbersToClear
+    }*/
+    
     
     func animateClearBoard() {
         clearSprites()
         for num in numbersToClear {
-            //if num.numberType != NumberType.Operator{
-            if num.numberType.rawValue < 3 { //remove from board if its not the operator
+            if num.numberType.rawValue < 3 {
                 if let sprite = num.sprite {
                     if sprite.actionForKey("removing") == nil {
                         let scaleAction = SKAction.scaleTo(0.1, duration: 1.5)
@@ -223,8 +227,10 @@ class GameScene: SKScene {
                         sprite.runAction(SKAction.sequence([scaleAction, SKAction.removeFromParent()]), withKey:"removing")
                     }
                 }
+                
             }
         }
+        level.clearBoard(numbersToClear)
     }
     
     func animateIncorrectEquation() {

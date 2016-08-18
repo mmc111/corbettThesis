@@ -18,8 +18,11 @@ import Foundation
 let NumCol = 7
 let NumRow = 10
 var levelNum: Int = -1 //testing addition
-//var levelNum: Int = -2 //testing subtraction
+
 var score: Int = 0
+
+var difficulty: Int = 1 //need to change this dynamically throughout gameplay, default difficulty is one
+var randRange: UInt32 = 1 //default for range will be 10 (4 for testing purposes until sprites updated)
 
 var currentRowsFilled = 0
 
@@ -40,6 +43,8 @@ class Level {
         assert(row >= 0 && row < NumRow)
         return numbers[col,row]
     }
+    
+
     
     func firstFill() -> Set<Number> {
         return createInitialNumbers()
@@ -116,8 +121,8 @@ class Level {
                    
                     //perform finding random values for equation 1
                     //generate 2 random numbers, set each in value1,2, do addition and put into values array
-                    value1 = Int(arc4random_uniform(4)) // can change number passed to random fxn to change difficulty
-                    value2 = Int(arc4random_uniform(4))
+                    value1 = Int(arc4random_uniform(randRange)) // can change number passed to random fxn to change difficulty
+                    value2 = Int(arc4random_uniform(randRange))
                     
                     result = value1 + value2
     
@@ -131,8 +136,8 @@ class Level {
                     print(" ")
                 case -2:
                     //subtraction
-                    value1 = Int(arc4random_uniform(3))
-                    value2 = Int(arc4random_uniform(3))
+                    value1 = Int(arc4random_uniform(randRange))
+                    value2 = Int(arc4random_uniform(randRange))
                     
                     //make result positive value
                     if value2 > value1 {
@@ -230,8 +235,8 @@ class Level {
         var numberType: NumberType
         let row = currentRowsFilled
         //make new equation values
-        var value1 = Int(arc4random_uniform(4)) // can change number passed to random fxn to change difficulty
-        var value2 = Int(arc4random_uniform(4))
+        var value1 = Int(arc4random_uniform(randRange)) // can change number passed to random fxn to change difficulty
+        var value2 = Int(arc4random_uniform(randRange))
         var result: Int
         
         //make value1 greater than value 2
@@ -290,6 +295,10 @@ class Level {
         return currentRowsFilled
     }
     
+    func setCurrentRowsFilled(newRowsFilled: Int) {
+        currentRowsFilled = newRowsFilled
+    }
+    
     func containsNumber(col: Int, row: Int) -> Bool {
 
             if numbers[col,row] != nil {
@@ -314,21 +323,21 @@ class Level {
             switch op {
             case -1:
                 if value1+value2 == result {
-                    print("is valid true", terminator: "")
+                    //print("is valid true", terminator: "")
                     return true
                     
                 } else {
-                    print("is valid false", terminator: "")
+                    //print("is valid false", terminator: "")
                     return false
                 }
             case -2:
                 if value1-value2 == result {
-                    print("equation: \(value2) - \(value1) = \(result)")
-                    print(" ")
+                    //print("equation: \(value2) - \(value1) = \(result)")
+                    //print(" ")
                     return true
                 } else {
-                    print("equation: \(value2) - \(value1) = \(result)")
-                    print(" ")
+                    //print("equation: \(value2) - \(value1) = \(result)")
+                    //print(" ")
                     return false
                 }
             case -3:
@@ -346,7 +355,37 @@ class Level {
             return false
         }
     }
-    func clearBoard (numbersToRemove: Array<Number>) {
+    
+    func getDifficulty() -> Int {
+        return difficulty
+    }
+    
+    func setDifficulty(newDifficulty: Int) {
+        
+        difficulty = newDifficulty
+        
+        switch difficulty {
+        case 2:
+            //randRange = 50
+            randRange = 3 //testing
+        case 3:
+            //randRange = 100
+            randRange = 4 //testing
+        default:
+            randRange = 10
+        }
+        
+    }
+    
+    func getLevel() -> Int {
+        return levelNum
+    }
+    
+    func setLevel(newLevelNum: Int) {
+        levelNum = newLevelNum
+    }
+    
+    func clearBoard (numbersToRemove: [Number]) {
         for num in numbersToRemove {
             if num.numberType.rawValue < 3 {  //don't remove operator from grid
                 numbers[num.col, num.row] = nil

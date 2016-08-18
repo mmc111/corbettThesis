@@ -17,11 +17,18 @@ class GameViewController: UIViewController {
     
     var score = 0
     var correct = 0
+    var correctChain = 0
     
     var seconds = 0
-    var maxSeconds = 20
-    var dropSeconds = 5
+    var maxSeconds = 300
+    var dropSeconds = 2
     var timer = NSTimer()
+    
+    //progress tracking variables to be stored in array as game progresses
+    var progress: [[Int]] = [[]]
+    var currentProgress: [Int] = []
+    var progressUpdate = 0
+    
     
     @IBOutlet weak var correctLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
@@ -80,6 +87,7 @@ class GameViewController: UIViewController {
         score = 0
         correct = 0
         seconds = 0
+        correctChain = 0
         
         timerLabel.text = "Time: \(seconds)"
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(GameViewController.addTime), userInfo: nil, repeats: true)
@@ -98,12 +106,19 @@ class GameViewController: UIViewController {
         //keep score
         correct = 0
         seconds = 0
+        correctChain = 0
+        
+        //clear board
+        self.scene.animateClearBoard()
+       
+        
         timerLabel.text = "Time: \(seconds)"
         updateLabels()
         
         //reset equations tables and game grid ***** need to fix this
         let initEquations = level.firstFill()
         scene.addSpritesForNumbers(initEquations)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(GameViewController.addTime), userInfo: nil, repeats: true)
     }
     
     func addTime() {
@@ -111,7 +126,7 @@ class GameViewController: UIViewController {
         timerLabel.text = "Time: \(seconds)"
         
         //can impose time limit here
-        if(seconds%dropSeconds == 0 && seconds > 0)
+        if(seconds%dropSeconds == 0 && seconds > 0 && level.getCurrentRowsFilled() < 7)
         {
             let newSet = level.addNewRow()
             self.scene.animateNewDrop(newSet)
@@ -163,7 +178,7 @@ class GameViewController: UIViewController {
         scene.userInteractionEnabled = true
         //beginGame()
         //set new challenge/difficulty
-        if(level.getCurrentRowsFilled() == 0)
+        /*if(level.getCurrentRowsFilled() == 0)
         {
             //call to create a new challenge - this will be level change
             startNewChallenge()
@@ -180,8 +195,12 @@ class GameViewController: UIViewController {
             level.clearBoard(numbersToClear)
 
             beginGame()
-        }
+        }*/
+        
+        //instead of restarting game, only call this when difficulty changes/level changes
+        startNewChallenge()
     }
+    
     
     func handleSwipe(numbers: Array<Number>)
     {
@@ -211,8 +230,24 @@ class GameViewController: UIViewController {
             //update score, correct and labels everytime a match has been made
             score = score + 10
             correct = correct + 1
+            correctChain = correctChain + 1
+            
             updateLabels()
             
+            print("correct chain: \(correctChain)")
+            
+            /*if correctChain == 10 { //use 10 correct matches in a row as criteria for mastery
+                //increase difficulty, give message indicating good job....(with fixed vs. growth here)
+               level.setDifficulty(level.getDifficulty()+1)
+                if level.getDifficulty() > 3 {
+                    //move to next level/operator type (mastered all difficulties of current operator type)
+                    level.setDifficulty(1)
+                    level.setLevel(level.getLevel()-1)
+                }
+            }*/
+                
+                
+                
             //if score is high enough, level is passed show game over panel
             if score == 40 {
                 /*gameOverPanel.image = UIImage(named: "difficulty increased")
@@ -226,9 +261,20 @@ class GameViewController: UIViewController {
             //let newSet = level.addNewRow()
             //self.scene.animateNewDrop(newSet)
             
-            if level.getCurrentRowsFilled() == 0 {
-                //beat this challenge, reset bored
+            if level.getCurrentRowsFilled() == 0 || correctChain >= 10{
+                //beat this challenge, reset board
+                //clear board and reset amount of rows filled
+                level.setCurrentRowsFilled(0)
                 gameOverPanel.image = UIImage(named: "difficulty increased")
+                //force difficulty increase
+                level.setDifficulty(level.getDifficulty()+1)
+                if level.getDifficulty() > 3 {
+                    //move to next level/operator type (mastered all difficulties of current operator type)
+                    level.setDifficulty(1)
+                    level.setLevel(level.getLevel()-1)
+                }
+                
+                correctChain = 0
                 winningLabel.hidden = false
                 showGameOver()
             }
@@ -241,12 +287,26 @@ class GameViewController: UIViewController {
             //logic to show game over goes here
             //need to know if rows are greater than the number that can be displayed
             
+            //update progress
+            currentProgress = [level.getLevel(), level.getDifficulty(), correctChain, correct, score]
+            progress[progressUpdate] = (currentProgress)
+            progressUpdate = progressUpdate+1
+            
+            correctChain = 0
+            
+            print("correct chain: \(correctChain)")
+            
             //fixed mindset
             if level.getCurrentRowsFilled() >= 7 {
-                //game is over
-                gameOverPanel.image = UIImage(named: "GameOver")
-                gameOverLabel.hidden = false
-                showGameOver()
+                //game is NOT over, allow continuous play, just stop dropping rows until there are less than x amount filled
+                
+                //use timer constraints
+                    //loop here to keep from dropping new rows until size is down to 5????
+                
+                //****can use this area to do fixed vs. growth mindset message*****
+                //gameOverPanel.image = UIImage(named: "GameOver")
+                //gameOverLabel.hidden = false
+                //showGameOver()
             }
             
             //OR growth mindset - allow user to make a certain number of attmepts, reward for different attempts, then revert back to previous difficulty
