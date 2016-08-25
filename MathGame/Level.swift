@@ -184,7 +184,7 @@ class Level {
         }
     func dropDownExisting() -> [[Number]] {
         var columns = [[Number]]()
-        
+        //**** problem here with gap???
         //loop through rows from bottom to top
         for col in 0..<NumCol {
             
@@ -256,7 +256,7 @@ class Level {
         case -3:
             result = value1 * value2
         case -4:
-            result = value1/value2
+            result = value1/value2 //issue here
         default:
             result = value1+value2
         }

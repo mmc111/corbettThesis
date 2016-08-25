@@ -43,7 +43,6 @@ class Number: CustomStringConvertible, Hashable {
             spriteName = "AddOp"
         case 4:
             spriteName = "SubOp"
-            //spriteName = "AddOp"
         case 5:
             spriteName = "MultOp"
         case 6:

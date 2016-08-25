@@ -21,7 +21,7 @@ class GameViewController: UIViewController {
     
     var seconds = 0
     var maxSeconds = 300
-    var dropSeconds = 2
+    var dropSeconds = 500
     var timer = NSTimer()
     
     //progress tracking variables to be stored in array as game progresses
@@ -282,22 +282,23 @@ class GameViewController: UIViewController {
             
         } else {
            // scene.animateIncorrectEquation() //highlight numbers in red
-            let newSet = level.addNewRow()
-            self.scene.animateNewDrop(newSet)
-            //logic to show game over goes here
-            //need to know if rows are greater than the number that can be displayed
+            if level.getCurrentRowsFilled() < 8 {
+                let newSet = level.addNewRow()
+                self.scene.animateNewDrop(newSet)
+                //logic to show game over goes here
+                //need to know if rows are greater than the number that can be displayed
             
-            //update progress
-            currentProgress = [level.getLevel(), level.getDifficulty(), correctChain, correct, score]
-            progress[progressUpdate] = (currentProgress)
-            progressUpdate = progressUpdate+1
+                //update progress
+                /*currentProgress = [level.getLevel(), level.getDifficulty(), correctChain, correct, score]
+                 progress[progressUpdate] = (currentProgress)
+                 progressUpdate = progressUpdate+1*/ //******needs to be fixed, if get 2 wrong in a row, something doesn't work correctly (index out of range error)
             
-            correctChain = 0
+                correctChain = 0
             
-            print("correct chain: \(correctChain)")
-            
+                print("correct chain: \(correctChain)")
+            }
             //fixed mindset
-            if level.getCurrentRowsFilled() >= 7 {
+            //if level.getCurrentRowsFilled() >= 9 {
                 //game is NOT over, allow continuous play, just stop dropping rows until there are less than x amount filled
                 
                 //use timer constraints
@@ -307,7 +308,7 @@ class GameViewController: UIViewController {
                 //gameOverPanel.image = UIImage(named: "GameOver")
                 //gameOverLabel.hidden = false
                 //showGameOver()
-            }
+            //}
             
             //OR growth mindset - allow user to make a certain number of attmepts, reward for different attempts, then revert back to previous difficulty
             //shuffle after each subsequent attempt until max attempts is reached, then revert
