@@ -196,6 +196,7 @@ class GameScene: SKScene {
     
     func clearSprites() {
         
+        //or use remove children method???????
         for row in 0..<10 {
             
             for col in 0..<7 {
@@ -211,9 +212,6 @@ class GameScene: SKScene {
 
         
     }
-    /*func getNumbersToClear() -> [Number] {
-        return numbersToClear
-    }*/
     
     
     func animateClearBoard() {
@@ -239,7 +237,7 @@ class GameScene: SKScene {
     }
     
     func animateNumberDrop(col: [[Number]], completion: () -> ()) {
-       
+        //drops completely new row down on top of existing rows
         //needs to happen after incorrect and after x amount of time has passed (tracked via timer)
         //need to compute duration because of varying number of numbers dropping
         var longestDuration: NSTimeInterval = 0
@@ -272,12 +270,25 @@ class GameScene: SKScene {
     }
     
     
-    func animateShuffle(numbers: Array<Number>) {
+    func animateShuffle(colA: [Int], colB: [Int], colC: [Int]) {
         //logic for animating shuffle (swapping numbers within columns)
+        //just need to update y positions based on shuffled array, maybe take in num array instead?
+        var longestDuration: NSTimeInterval = 0
+        
+        /*for col in 0..<7 {
+            if col == 0 || col == 4 || col == 6 {
+                switch col {
+                case 0:
+                    
+                }
+            }
+        }*/
+        
+        
     }
     
     func animateNewDrop(numbers: Set<Number>) {
-        
+        //drops existing rows down
         //take top most row and drop from top of screen to correct location
         //get number object
         let startRow = level.getCurrentRowsFilled()

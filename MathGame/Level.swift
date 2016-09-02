@@ -13,6 +13,7 @@
 //marketing department - iPads
 
 import Foundation
+import GameplayKit
 
 //define dimensions of game grid
 let NumCol = 7
@@ -27,6 +28,12 @@ var randRange: UInt32 = 1 //default for range will be 10 (4 for testing purposes
 var currentRowsFilled = 0
 
 var numbersToClear = [Number]()
+
+var colAIndex = [Int]()
+var colBIndex = [Int]()
+var colCIndex = [Int]()
+
+var spriteCount = 0
 
 class Level {
     
@@ -60,15 +67,15 @@ class Level {
             //let op = Number(col: 2, row: 2, value: levelNum, numberType: NumberType.Operator)
         switch levelNum{
         case -1:
-            op = Number(col: 2, row: 2, value: -1, numberType: NumberType.AddOperator)
+            op = Number(col: 2, row: 2, value: -1, numberType: NumberType.AddOperator, uniqueID: -1)
         case -2:
-            op = Number(col: 2, row: 2, value: -2, numberType: NumberType.SubOperator)
+            op = Number(col: 2, row: 2, value: -2, numberType: NumberType.SubOperator, uniqueID: -2)
         case -3:
-            op = Number(col: 2, row: 2, value: -3, numberType: NumberType.MultOperator)
+            op = Number(col: 2, row: 2, value: -3, numberType: NumberType.MultOperator, uniqueID: -3)
         case -4:
-            op = Number(col: 2, row: 2, value: -4, numberType: NumberType.DivOperator)
+            op = Number(col: 2, row: 2, value: -4, numberType: NumberType.DivOperator, uniqueID: -4)
         default:
-            op = Number(col: 2, row: 2, value: -1, numberType: NumberType.AddOperator)
+            op = Number(col: 2, row: 2, value: -1, numberType: NumberType.AddOperator, uniqueID: -1)
             
         }
         
@@ -85,19 +92,19 @@ class Level {
                         case 0:
                             numberType = NumberType.Operand
                             value = self.values[0, row]!
-                            let number = Number(col: col, row: row, value: value, numberType: numberType) //creating Number objects with values and sprite names
+                            let number = Number(col: col, row: row, value: value, numberType: numberType, uniqueID: spriteCount+1) //creating Number objects with values and sprite names
                             numbers[col,row] = number
                             set.insert(number)
                         case 4:
                             numberType = NumberType.Operand
                             value = self.values[1, row]!
-                            let number = Number(col: col, row: row, value: value, numberType: numberType)
+                            let number = Number(col: col, row: row, value: value, numberType: numberType, uniqueID: spriteCount+1)
                             numbers[col,row] = number
                             set.insert(number)
                         case 6:
                             numberType = NumberType.Result
                             value = self.values[2, row]!
-                            let number = Number(col: col, row: row, value: value, numberType: numberType)
+                            let number = Number(col: col, row: row, value: value, numberType: numberType, uniqueID: spriteCount+1)
                             numbers[col,row] = number
                             set.insert(number)
                         default:
@@ -182,6 +189,22 @@ class Level {
                 
             }
         }
+    /*func getShuffledBoard() -> [[Number]] {
+        var columns = [[Number]]()
+        
+        for col in 0..<NumCol {
+            for row in 0..<NumRow {
+                if col == 0 || col == 4 || col == 6  {
+                    var array = [Number]()
+                    for row in 0..<NumRow {
+                        ///logic here
+                    }
+                }
+                
+            }
+        }
+    }*/
+    
     func dropDownExisting() -> [[Number]] {
         var columns = [[Number]]()
         //**** problem here with gap???
@@ -268,17 +291,17 @@ class Level {
                 switch col {
                 case 0:
                     numberType = NumberType.Operand
-                    let number = Number(col: col, row: row, value: value1, numberType: numberType)
+                    let number = Number(col: col, row: row, value: value1, numberType: numberType, uniqueID: spriteCount+1)
                     numbers[col,row] = number
                     newSet.insert(number)
                 case 4:
                     numberType = NumberType.Operand
-                    let number = Number(col: col, row: row, value: value2, numberType: numberType)
+                    let number = Number(col: col, row: row, value: value2, numberType: numberType, uniqueID: spriteCount+1)
                     numbers[col,currentRowsFilled] = number
                     newSet.insert(number)
                 case 6:
                     numberType = NumberType.Result
-                    let number = Number(col: col, row: row, value: result, numberType: numberType)
+                    let number = Number(col: col, row: row, value: result, numberType: numberType, uniqueID: spriteCount+1)
                     numbers[col,currentRowsFilled] = number
                     newSet.insert(number)
                 default:
@@ -360,6 +383,18 @@ class Level {
         return difficulty
     }
     
+    func getColA() -> [Int] {
+        return colAIndex
+    }
+    
+    func getColB() -> [Int] {
+        return colBIndex
+    }
+    
+    func getColC() -> [Int] {
+        return colCIndex
+    }
+    
     func setDifficulty(newDifficulty: Int) {
         
         difficulty = newDifficulty
@@ -403,6 +438,108 @@ class Level {
             
         }
     }
+    
+    /*func getNumbersCurrentPositionsColA() {
+        
+        
+        
+        for i in 0..<currentRowsFilled {
+            
+        }
+        
+    }*/
+    
+    
+    
+    func shuffleBoard() {
+        
+        colAIndex.removeAll()
+        colBIndex.removeAll()
+        colCIndex.removeAll()
+        
+        var index1 = 0
+        var index2 = 0
+        
+        for i in 0..<currentRowsFilled {
+            colAIndex.append(i)
+            colBIndex.append(i)
+            colBIndex.append(i)
+        }
+        //var shuffledSet = Set<Number>()
+        
+        let currentRows = UInt32(currentRowsFilled)
+        
+        
+        
+        //perform a number of random swaps of elements within each column to get new locations
+        //this is the shuffle! move to its own method!!!!!
+        for currentCol in 0..<7 {
+            
+            if currentCol == 0 || currentCol == 4 || currentCol == 6 {
+                for _ in 0..<currentRowsFilled {
+                    //print("column swapping: \(currentCol)")
+                    for swapCount in 0...1000 { //perform 50 random swaps
+                        index1 = Int(arc4random_uniform(currentRows))
+                        index2 = Int(arc4random_uniform(currentRows))
+                        
+                        swap(currentCol, rowIndex1: index1, rowIndex2: index2)
+                        //print("SwapCount = \(swapCount)")
+                    
+                        //want to keep track of new indicies assigned and return it somehow.
+                    
+                    }//swaps are complete
+                
+                    
+                }
+            }
+        }
+        //print method for swaps - for error checking purposes, not included in final game
+        /*for k in 0..<7 {
+            if k == 0 || k == 4 || k == 6 {
+                for m in 0...currentRowsFilled {
+                    let numj = numAtCol(k, row: m)
+                    let valuek = numj?.value
+                    print("[\(k),\(m) = \(valuek)")
+                }
+            }
+        }*/
+        
+            
+     
+        
+    }
+    func swap(colToSwap: Int, rowIndex1: Int, rowIndex2:Int) {
+        
+        //swap the indices in tracking array
+        let tempidx1 = rowIndex1
+        let tempidx2 = rowIndex2
+        
+        switch colToSwap {
+        case 0 :
+            colAIndex[rowIndex2] = tempidx1
+            colAIndex[rowIndex1] = tempidx2
+        case 4:
+            colBIndex[rowIndex2] = tempidx1
+            colBIndex[rowIndex1] = tempidx2
+        case 4:
+            colCIndex[rowIndex2] = tempidx1
+            colCIndex[rowIndex1] = tempidx2
+        default:
+            print("default swap")
+        }
+        
+        
+        
+        let temp1 = numAtCol(colToSwap, row: rowIndex1)
+        let temp2 = numAtCol(colToSwap, row: rowIndex2)
+        numbers[colToSwap,rowIndex1] = temp2
+        numbers[colToSwap,rowIndex1]?.row = rowIndex1
+        numbers[colToSwap,rowIndex2] = temp1
+        
+        //update col information??
+        numbers[colToSwap,rowIndex2]?.row = rowIndex2
+    }
+    
     
 }
 

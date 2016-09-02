@@ -19,6 +19,8 @@ class Number: CustomStringConvertible, Hashable {
     var col: Int //col, row to keep track of position in grid
     var row: Int
     
+    var uniqueID: Int
+    
     var value: Int
     let numberType: NumberType
     var sprite: SKSpriteNode?
@@ -27,10 +29,12 @@ class Number: CustomStringConvertible, Hashable {
     
     var highlightedSpriteName: String
     
-    init(col: Int, row: Int, value: Int, numberType: NumberType) {
+    init(col: Int, row: Int, value: Int, numberType: NumberType, uniqueID: Int) {
         self.col = col
         self.row = row
         self.value = value
+        
+        self.uniqueID = uniqueID
         
         self.numberType = numberType
         

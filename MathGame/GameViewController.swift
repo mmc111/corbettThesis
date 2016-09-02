@@ -285,6 +285,7 @@ class GameViewController: UIViewController {
             if level.getCurrentRowsFilled() < 8 {
                 let newSet = level.addNewRow()
                 self.scene.animateNewDrop(newSet)
+                level.shuffleBoard()
                 //logic to show game over goes here
                 //need to know if rows are greater than the number that can be displayed
             
