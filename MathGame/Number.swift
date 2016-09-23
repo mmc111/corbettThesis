@@ -19,7 +19,7 @@ class Number: CustomStringConvertible, Hashable {
     var col: Int //col, row to keep track of position in grid
     var row: Int
     
-    var uniqueID: Int
+    var prevY: Int
     
     var value: Int
     let numberType: NumberType
@@ -28,13 +28,15 @@ class Number: CustomStringConvertible, Hashable {
     var spriteName: String
     
     var highlightedSpriteName: String
+    var correctSpriteName: String
+    var incorrectSpriteName: String
     
-    init(col: Int, row: Int, value: Int, numberType: NumberType, uniqueID: Int) {
+    init(col: Int, row: Int, value: Int, numberType: NumberType, prevY: Int) {
         self.col = col
         self.row = row
         self.value = value
         
-        self.uniqueID = uniqueID
+        self.prevY = prevY
         
         self.numberType = numberType
         
@@ -57,6 +59,9 @@ class Number: CustomStringConvertible, Hashable {
         
         
         highlightedSpriteName = spriteName + "-Highlighted"
+        
+        incorrectSpriteName = spriteName + "-Red"
+        correctSpriteName = spriteName + "-Green"
       
     }
     var description: String {
@@ -67,10 +72,27 @@ class Number: CustomStringConvertible, Hashable {
         return row*10+col //return unique hash value for number object
     }
     
+    func update(value: Int) {
+        
+        switch numberType.rawValue {
+        case 1:
+            spriteName = "\(value)"
+        case 2:
+            spriteName = "\(value)Result"
+        default:
+            spriteName = "null"
+        }
+    
+        highlightedSpriteName = spriteName + "-Highlighted"
+        incorrectSpriteName = spriteName + "-Red"
+        correctSpriteName = spriteName + "-Green"
+    }
+    
 }
 
 func ==(lhs: Number, rhs: Number) -> Bool {
     return lhs.col == rhs.col && lhs.row == rhs.row
 }
+
 
 

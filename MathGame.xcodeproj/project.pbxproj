@@ -18,8 +18,8 @@
 		D4115FE61C20B3A70088B14C /* Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4115FE51C20B3A70088B14C /* Number.swift */; };
 		D4115FE81C20BF0A0088B14C /* GameGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4115FE71C20BF0A0088B14C /* GameGrid.swift */; };
 		D4115FEA1C20C2300088B14C /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4115FE91C20C2300088B14C /* Level.swift */; };
-		D4115FEC1C20C5670088B14C /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4115FEB1C20C5660088B14C /* Equation.swift */; };
 		D41160001C21A2EB0088B14C /* Sprites.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D4115FFF1C21A2EB0088B14C /* Sprites.atlas */; };
+		D48A06901D95293700221A29 /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A068F1D95293700221A29 /* StartViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,8 +57,8 @@
 		D4115FE51C20B3A70088B14C /* Number.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Number.swift; sourceTree = "<group>"; };
 		D4115FE71C20BF0A0088B14C /* GameGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameGrid.swift; sourceTree = "<group>"; };
 		D4115FE91C20C2300088B14C /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
-		D4115FEB1C20C5660088B14C /* Equation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equation.swift; sourceTree = "<group>"; };
 		D4115FFF1C21A2EB0088B14C /* Sprites.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Sprites.atlas; sourceTree = "<group>"; };
+		D48A068F1D95293700221A29 /* StartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,12 +113,12 @@
 				D4115FB51C20AAE50088B14C /* GameScene.sks */,
 				D4115FB71C20AAE50088B14C /* GameScene.swift */,
 				D4115FB91C20AAE50088B14C /* GameViewController.swift */,
+				D48A068F1D95293700221A29 /* StartViewController.swift */,
 				D4115FBB1C20AAE50088B14C /* Main.storyboard */,
 				D4115FFF1C21A2EB0088B14C /* Sprites.atlas */,
 				D4115FBE1C20AAE50088B14C /* Assets.xcassets */,
 				D4115FE51C20B3A70088B14C /* Number.swift */,
 				D4115FE91C20C2300088B14C /* Level.swift */,
-				D4115FEB1C20C5660088B14C /* Equation.swift */,
 				D4115FE71C20BF0A0088B14C /* GameGrid.swift */,
 				D4115FC31C20AAE50088B14C /* Info.plist */,
 			);
@@ -280,9 +280,9 @@
 				D4115FEA1C20C2300088B14C /* Level.swift in Sources */,
 				D4115FE61C20B3A70088B14C /* Number.swift in Sources */,
 				D4115FB81C20AAE50088B14C /* GameScene.swift in Sources */,
-				D4115FEC1C20C5670088B14C /* Equation.swift in Sources */,
 				D4115FE81C20BF0A0088B14C /* GameGrid.swift in Sources */,
 				D4115FBA1C20AAE50088B14C /* GameViewController.swift in Sources */,
+				D48A06901D95293700221A29 /* StartViewController.swift in Sources */,
 				D4115FB41C20AAE50088B14C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

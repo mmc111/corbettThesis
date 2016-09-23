@@ -29,13 +29,17 @@ class GameViewController: UIViewController {
     var currentProgress: [Int] = []
     var progressUpdate = 0
     
+    var okToDrop:Bool = true
+    
+    @IBOutlet weak var agreeToPlayButton: UIButton!
     
     @IBOutlet weak var correctLabel: UILabel!
+    @IBOutlet weak var correctDescr: UILabel!
+    @IBOutlet weak var scoreDescr: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
-    @IBOutlet weak var gameOverPanel: UIImageView!
+    @IBOutlet weak var messageImage: UIImageView!
+    @IBOutlet weak var assentFormImage: UIImageView!
     
-    @IBOutlet weak var gameOverLabel: UILabel!
-    @IBOutlet weak var winningLabel: UILabel!
     
     @IBOutlet var timerLabel: UILabel!
     
@@ -49,6 +53,12 @@ class GameViewController: UIViewController {
         return true
     }
    
+    @IBAction func agreeToPlayButtonPressed(_: AnyObject) {
+        //move to login storyboard
+        agreeToPlayButton.hidden = true
+        assentFormImage.hidden = true
+        beginGame()
+    }
     
     override func viewDidLoad(){
         super.viewDidLoad()
@@ -56,6 +66,7 @@ class GameViewController: UIViewController {
         //configure the view
         let skView = view as! SKView
         skView.multipleTouchEnabled = false
+        
         
         //create and configure the scene
         scene = GameScene(size: skView.bounds.size)
@@ -67,11 +78,18 @@ class GameViewController: UIViewController {
         
         scene.swipeHandler = handleSwipe
         
-        gameOverPanel.hidden = true
+        messageImage.hidden = true
+        timerLabel.hidden = true
+        correctDescr.hidden = true
+        scoreDescr.hidden = true
+        correctLabel.hidden = true
+        scoreLabel.hidden = true
+        assentFormImage.image = UIImage(named:"assent.png")
+        assentFormImage.hidden = false
+        agreeToPlayButton.hidden = false
+        
         //present scene
         skView.presentScene(scene)
-        
-        beginGame()
     }
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
@@ -82,27 +100,38 @@ class GameViewController: UIViewController {
     }
     
     func beginGame() {
-        gameOverLabel.hidden = true
-        winningLabel.hidden = true
+        //gameOverLabel.hidden = true
+        //winningLabel.hidden = true
         score = 0
         correct = 0
         seconds = 0
         correctChain = 0
         
+        agreeToPlayButton.hidden = true
+        
         timerLabel.text = "Time: \(seconds)"
+        
+        timerLabel.hidden = false
+        correctDescr.hidden = false
+        scoreDescr.hidden = false
+        correctLabel.hidden = false
+        scoreLabel.hidden = false
+        
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(GameViewController.addTime), userInfo: nil, repeats: true)
         
         updateLabels()
         
         let initEquations = level.firstFill()
+        self.level.shuffleBoard()
         scene.addSpritesForNumbers(initEquations)
     }
     
     //function to reset/update board after gameplay has begun, call in viewDidLoad()
     func startNewChallenge() {
         //need to implement change in difficulty or level type here (dependent upon game progress)
-        gameOverLabel.hidden = true
-        winningLabel.hidden = true
+       // gameOverLabel.hidden = true
+       // winningLabel.hidden = true
+        
         //keep score
         correct = 0
         seconds = 0
@@ -112,6 +141,7 @@ class GameViewController: UIViewController {
         self.scene.animateClearBoard()
        
         
+        
         timerLabel.text = "Time: \(seconds)"
         updateLabels()
         
@@ -119,6 +149,9 @@ class GameViewController: UIViewController {
         let initEquations = level.firstFill()
         scene.addSpritesForNumbers(initEquations)
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(GameViewController.addTime), userInfo: nil, repeats: true)
+        scene.animateShuffle(level.shuffleBoard()){
+            
+        }
     }
     
     func addTime() {
@@ -126,16 +159,18 @@ class GameViewController: UIViewController {
         timerLabel.text = "Time: \(seconds)"
         
         //can impose time limit here
-        if(seconds%dropSeconds == 0 && seconds > 0 && level.getCurrentRowsFilled() < 7)
+        if(seconds%dropSeconds == 0 && seconds > 0 && level.getCurrentRowsFilled() < 7 && okToDrop)
         {
             let newSet = level.addNewRow()
-            self.scene.animateNewDrop(newSet)
+            self.scene.animateNewDrop(newSet){
+                self.view.userInteractionEnabled = true
+            }
         }
         if(seconds == maxSeconds) {
             timer.invalidate()
             //game is over
-            gameOverPanel.image = UIImage(named: "GameOver")
-            gameOverLabel.hidden = false
+            //gameOverPanel.image = UIImage(named: "GameOver")
+            //gameOverLabel.hidden = false
             showGameOver()
         }
     }
@@ -153,12 +188,12 @@ class GameViewController: UIViewController {
         timer.invalidate()
         
         //add time bonus
-        if(winningLabel.hidden == false){
+        /*if(winningLabel.hidden == false){
             score = score + (seconds*5)
         }
-        
+        */
         updateLabels()
-        gameOverPanel.hidden = false
+        //gameOverPanel.hidden = false
         scene.userInteractionEnabled = false
         
         ///////need to fix this - touch recognizer to restart game, restart game needs to be fixed
@@ -172,9 +207,9 @@ class GameViewController: UIViewController {
         //STARTS GAME OVER, resets score and correct equations
         view.removeGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer = nil
-        gameOverPanel.hidden = true
+        /*gameOverPanel.hidden = true
         gameOverLabel.hidden = true
-        winningLabel.hidden = true
+        winningLabel.hidden = true*/
         scene.userInteractionEnabled = true
         //beginGame()
         //set new challenge/difficulty
@@ -198,6 +233,7 @@ class GameViewController: UIViewController {
         }*/
         
         //instead of restarting game, only call this when difficulty changes/level changes
+        showMessagePanel()
         startNewChallenge()
     }
     
@@ -212,20 +248,21 @@ class GameViewController: UIViewController {
         if level.isValidEquation(numbers) {
             
             //TODO: highlight numbers in green
-            
+            //pause timer
+            okToDrop = false
             level.removeNumbers(numbers)
+            view.userInteractionEnabled = false
             
             //animate highlight and removal
             scene.animateCorrectEquation()
-            /*({
-                 //self.view.userInteractionEnabled = true
-            })*/
-            
-            let columns = self.level.dropDownExisting()
-            
-            self.scene.animateNumberDrop(columns) {
-                self.view.userInteractionEnabled = true
+            {
+                
+                let columns = self.level.dropDownExisting()
+                self.scene.animateNumberDrop(columns) {
+                    self.view.userInteractionEnabled = true
+                }
             }
+            
             
             //update score, correct and labels everytime a match has been made
             score = score + 10
@@ -234,9 +271,8 @@ class GameViewController: UIViewController {
             
             updateLabels()
             
-            print("correct chain: \(correctChain)")
             
-            /*if correctChain == 10 { //use 10 correct matches in a row as criteria for mastery
+            if correctChain == 10 { //use 10 correct matches in a row as criteria for mastery
                 //increase difficulty, give message indicating good job....(with fixed vs. growth here)
                level.setDifficulty(level.getDifficulty()+1)
                 if level.getDifficulty() > 3 {
@@ -244,12 +280,16 @@ class GameViewController: UIViewController {
                     level.setDifficulty(1)
                     level.setLevel(level.getLevel()-1)
                 }
-            }*/
+            }
                 
                 
                 
             //if score is high enough, level is passed show game over panel
             if score == 40 {
+                
+                //messageImage.image = UIImage("")
+                showMessagePanel()
+                
                 /*gameOverPanel.image = UIImage(named: "difficulty increased")
                 winningLabel.hidden = false
                 showGameOver()*/
@@ -265,7 +305,7 @@ class GameViewController: UIViewController {
                 //beat this challenge, reset board
                 //clear board and reset amount of rows filled
                 level.setCurrentRowsFilled(0)
-                gameOverPanel.image = UIImage(named: "difficulty increased")
+                //gameOverPanel.image = UIImage(named: "difficulty increased")
                 //force difficulty increase
                 level.setDifficulty(level.getDifficulty()+1)
                 if level.getDifficulty() > 3 {
@@ -274,29 +314,35 @@ class GameViewController: UIViewController {
                     level.setLevel(level.getLevel()-1)
                 }
                 
-                correctChain = 0
-                winningLabel.hidden = false
-                showGameOver()
+                
+                //messageImage.image = UIImage("")
+                showMessagePanel()
+                hideGameOver()
             }
-            
+            self.view.userInteractionEnabled = true
             
         } else {
-           // scene.animateIncorrectEquation() //highlight numbers in red
-            if level.getCurrentRowsFilled() < 8 {
+            //disable play
+            self.view.userInteractionEnabled  = false
+            //highlight numbers in red
+            self.scene.showIncorrectIndicator(){
+                self.view.userInteractionEnabled = true
+            }
+            self.view.userInteractionEnabled = false
+            if level.getCurrentRowsFilled() < 7 {
                 let newSet = level.addNewRow()
-                self.scene.animateNewDrop(newSet)
-                level.shuffleBoard()
+                
+                self.scene.animateNewDrop(newSet){
+                    let newColumns = self.level.shuffleBoard()//shuffle after new row has finished dropping
+                    self.scene.animateShuffle(newColumns) {
+                        self.view.userInteractionEnabled = true
+                    }
+                }
+                
+                updateProgress()
                 //logic to show game over goes here
                 //need to know if rows are greater than the number that can be displayed
             
-                //update progress
-                /*currentProgress = [level.getLevel(), level.getDifficulty(), correctChain, correct, score]
-                 progress[progressUpdate] = (currentProgress)
-                 progressUpdate = progressUpdate+1*/ //******needs to be fixed, if get 2 wrong in a row, something doesn't work correctly (index out of range error)
-            
-                correctChain = 0
-            
-                print("correct chain: \(correctChain)")
             }
             //fixed mindset
             //if level.getCurrentRowsFilled() >= 9 {
@@ -306,16 +352,43 @@ class GameViewController: UIViewController {
                     //loop here to keep from dropping new rows until size is down to 5????
                 
                 //****can use this area to do fixed vs. growth mindset message*****
-                //gameOverPanel.image = UIImage(named: "GameOver")
-                //gameOverLabel.hidden = false
-                //showGameOver()
+                //keep trying!
+            
             //}
             
             //OR growth mindset - allow user to make a certain number of attmepts, reward for different attempts, then revert back to previous difficulty
             //shuffle after each subsequent attempt until max attempts is reached, then revert
             
+            self.view.userInteractionEnabled = true
+            
         }
         
         
+    }
+    
+    func updateProgress(){
+        //update progress
+        if correctChain > 0 {
+            currentProgress = [progressUpdate,level.getLevel(), level.getDifficulty(), correctChain, correct, score]
+            progress.append(currentProgress)
+            progressUpdate = progressUpdate+1
+        }
+        
+        correctChain = 0
+    }
+    
+    func showMessagePanel() {
+        scene.userInteractionEnabled = false
+        messageImage.hidden = false
+        
+        self.tapGestureRecognizer = UITapGestureRecognizer(target:self, action: #selector(self.hideMessagePanel))
+        view.addGestureRecognizer(tapGestureRecognizer)
+    }
+    func hideMessagePanel() {
+        view.removeGestureRecognizer(tapGestureRecognizer)
+        tapGestureRecognizer = nil
+        
+        messageImage.hidden = true
+        scene.userInteractionEnabled = true
     }
 }
