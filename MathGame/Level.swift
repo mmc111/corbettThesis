@@ -6,12 +6,6 @@
 //  Copyright © 2015 Megan Corbett. All rights reserved.
 
 
-
-//////practice mode without timer
-//****fractions
-//mathletics
-//marketing department - iPads
-
 import Foundation
 import GameplayKit
 
@@ -23,47 +17,45 @@ var levelNum: Int = -1 //testing addition
 var score: Int = 0
 
 var difficulty: Int = 1 //need to change this dynamically throughout gameplay, default difficulty is one
-var randRange: UInt32 = 10 //default for range will be 10 (4 for testing purposes until sprites updated)
+var randRange: UInt32 = 5 //randrange is the max result value/ max value on board, initialized to first difficulty1
+
+let difficulty1 = 5
+let difficulty2 = 10
+let difficulty3 = 20
 
 var currentRowsFilled = 0
 
 var numbersToClear = [Number]()
 
-var newResults = [Number]()
+var newNumbers = [Number]()
 
 var maxResultValue: Int = -1
 
+let numStartEquations = 3
+
+var isFixedLevel: Bool = false
+
 class Level {
     
-    //var levelNumber: Int = 0
-    
     private var numbers = GameGrid<Number>(colCount: NumCol, rowCount: NumRow)
-    private var tempNumbers = GameGrid<Number>(colCount: NumCol, rowCount: NumRow)
     
     var values = GameGrid<Int>(colCount: NumCol, rowCount: NumRow)
     
-    //function to access Number object as specific position in grid
-    func numAtCol(col: Int, row: Int) -> Number? {
-        
-        assert(col >= 0 && col < NumCol)
-        assert(row >= 0 && row < NumRow)
-        return numbers[col,row]
-    }
-    
-
     
     func firstFill() -> Set<Number> {
         return createInitialNumbers()
-     }
+    }
     
     private func createInitialNumbers() -> Set<Number> {
+        
+        //create a set of numbers including the operator to draw
         var set = Set<Number>()
-            createEquations(3) //initial call to create equations
-            var value: Int
-            var numberType: NumberType
+        
         var op :Number
-
-            //let op = Number(col: 2, row: 2, value: levelNum, numberType: NumberType.Operator)
+        
+        
+        set = addNewRows(numStartEquations)
+        
         switch levelNum{
         case -1:
             op = Number(col: 2, row: 2, value: -1, numberType: NumberType.AddOperator, prevY: -1)
@@ -78,116 +70,141 @@ class Level {
             
         }
         
-            numbers[2,2] = op //operator position in grid
-            set.insert(op)
+        numbers[2,2] = op //operator position in grid
+        set.insert(op)
         
-            //now create numbers to fill first 3 rows since it is first fill
-            for row in 0..<3 {
-
-                for col in 0..<NumCol {
-                    //only generate numbers for valid columns
-                    if col != 1 && col != 2 && col != 3 && col != 5 {
-                        switch col {
-                        case 0:
-                            numberType = NumberType.Operand
-                            value = self.values[0, row]!
-                            let number = Number(col: col, row: row, value: value, numberType: numberType, prevY: row) //creating Number objects with values and sprite names
-                            numbers[col,row] = number
-                            set.insert(number)
-                        case 4:
-                            numberType = NumberType.Operand
-                            value = self.values[1, row]!
-                            let number = Number(col: col, row: row, value: value, numberType: numberType, prevY: row)
-                            numbers[col,row] = number
-                            set.insert(number)
-                        case 6:
-                            numberType = NumberType.Result
-                            value = self.values[2, row]!
-                            let number = Number(col: col, row: row, value: value, numberType: numberType, prevY: row)
-                            numbers[col,row] = number
-                            set.insert(number)
-                        default:
-                            print("default", terminator: "")
-                        }
-                    }
-                }
-            }
-            return set //set will be used for displaying sprites
-        }
+        return set //set will be used for displaying sprites
+    }
+    
+    func getEquationValues() -> [Int]{
+        //creates an array of a single valid equation and returns it
+        var equationValues = [Int]()
         
-        func createEquations(numEquations: Int){
-            var value1: Int
-            var value2: Int
-            var result: Int
+        var value1 = 0
+        var value2 = 0
+        var result = 0
+        
+        switch levelNum {
+        case -1:
+            result = Int(arc4random_uniform(randRange))
+            value1 = Int(arc4random_uniform(randRange))
             
-            //fill array with values to be used, values then used to create number objects with attributes needed for sprite display
-            for _ in 0..<numEquations {
-                switch levelNum{
-                case -1:
-                   
-                    //perform finding random values for equation 1
-                    //generate 2 random numbers, set each in value1,2, do addition and put into values array
-                    value1 = Int(arc4random_uniform(randRange)) // can change number passed to random fxn to change difficulty
+            if value1 > result {
+                //swap values
+                let temp1 = value1
+                let temp2 = result
+                
+                value1 = temp2
+                result = temp1
+            }
+            
+            value2 = result - value1
+            equationValues = [value1, value2, result]
+        case -2:
+            //subtraction
+            value1 = Int(arc4random_uniform(randRange))
+            value2 = Int(arc4random_uniform(randRange))
+            
+            //make result positive value
+            if value2 > value1 {
+                //swap values
+                let temp1 = value1
+                let temp2 = value2
+                
+                value1 = temp2
+                value2 = temp1
+            }
+            
+            result = value1 - value2
+            equationValues = [value1, value2, result]
+        case -3:
+            //multiplication
+            result = Int(arc4random_uniform(randRange))
+            value1 = Int(arc4random_uniform(randRange))
+            if result == 0 {
+                if value1 != 0 {
+                    value2 = 0
+                } else {
                     value2 = Int(arc4random_uniform(randRange))
-                    
-                    result = value1 + value2
-    
-                        values[0, currentRowsFilled] = value1
-                        values[1, currentRowsFilled] = value2
-                        values[2, currentRowsFilled] = result
-                    
-                    currentRowsFilled = currentRowsFilled + 1
-
-                case -2:
-                    //subtraction
-                    value1 = Int(arc4random_uniform(randRange))
-                    value2 = Int(arc4random_uniform(randRange))
-                    
-                    //make result positive value
-                    if value2 > value1 {
-                        //swap values
-                        let temp1 = value1
-                        let temp2 = value2
-                        
-                        value1 = temp2
-                        value2 = temp1
-                    }
-                    result = value1 - value2
-                        
-                    self.values[0, currentRowsFilled] = value1
-                    self.values[1, currentRowsFilled] = value2
-                    self.values[2, currentRowsFilled] = result
-                        
-                    currentRowsFilled = currentRowsFilled + 1
-                        
-                    
-                    
-                case -3:
-                    //multiplication
-                    value1 = Int(arc4random_uniform(6))
-                    value2 = Int(arc4random_uniform(6))
-                    
-                    result = value2 * value1
-                    
-                    self.values[0, currentRowsFilled] = value1
-                    self.values[1, currentRowsFilled] = value2
-                    self.values[2, currentRowsFilled] = result
-                    
-                    currentRowsFilled = currentRowsFilled + 1
-                    
-                default:
-                    value1 = -1
-                    value2 = -1
-                    
-                    result = -1
                 }
+            } else if value1 == 0 {
+                value2 = Int(arc4random_uniform(randRange))
+                result = 0
+            } else {
+                if value1 > result {
+                    //swap values
+                    let temp1 = value1
+                    let temp2 = result
+                    
+                    value1 = temp2
+                    result = temp1
+                }
+                while (result % value1) != 0 {
+                    value1 = value1 + 1
+                }
+                value2 = result/value1
+                
+                equationValues = [value1, value2, result]
+                
+            }
+            
+        case -4:
+            //division
+            value1 = Int(arc4random_uniform(randRange))
+            value2 = Int(arc4random_uniform(randRange))
+            if value1 == 0 {
+                value1 = 1
+            }
+            if value2 == 0 {
+                value2 = 1
+            }
+            if value1 < value2 {
+                let temp1 = value1
+                let temp2 = value2
+                
+                value1 = temp2
+                value2 = temp1
+            }
+            
+            
+            while (value1 % value2) != 0 {
+                value2 = value2 + 1
+            }
+            
+            result = value1/value2
+            equationValues = [value1, value2, result]
+            
+        default:
+            print("default")
+        }
+        return equationValues
+        
+    }
+    
+    func isValidEquation(numsToCheck: Array<Number>) -> Bool
+    {
+        //checks if numbers swiped across form a valid equation
+        if numsToCheck.count == 4 {
+            //check if its a valid equation
+            
+            let result = numsToCheck[3].value
+            let value2 = numsToCheck[2].value
+            //let op = numsToCheck[1].value
+            let value1 = numsToCheck[0].value
+            
+            let calculatedResult = checkValid(value1, num2: value2, calculating: true)
+            
+            if result == calculatedResult {
+                return true
             }
         }
-
+        return false
+    }
     
+    ////////////////////////functions to perform operations on game board, some based on swipe handling////////////////
     func dropDownExisting() -> [[Number]] {
         var columns = [[Number]]()
-        //**** problem here with gap???
+        
         //loop through rows from bottom to top
         for col in 0..<NumCol {
             
@@ -202,12 +219,13 @@ class Level {
                                 numbers[col, lookup] = nil
                                 numbers[col, row] = number
                                 number.row = row
-                            
+                                
                                 //add number to array, need them in order for animation purposes (when dropping down, higher numbers have longer delays)
                                 array.append(number)
-                        
+                                
                                 //don't need to scan farther, break from loop
                                 break
+                                
                             }
                         }
                     }
@@ -221,286 +239,100 @@ class Level {
             }//end for row
         }//end for col
         
-        currentRowsFilled = currentRowsFilled - 1
-        
-        //check that the reduced set of numbers has valid results
-        newResults.removeAll()
-        let invalidResults = hasValidResults()
-        if invalidResults.count > 0 {
-            //reset values in number to something valid
-            
-            newResults = handleInvalidResults(invalidResults)
-            //now need to scene will be updated during number drop
-        }
-        
         return columns
     }
-    func getNewResults() -> [Number] {
-        return newResults
-    }
     
-    func clearNewResults() {
-        newResults.removeAll()
-    }
-    
-    func handleInvalidResults(invalidResults: [Number]) -> [Number] {
-        //see if there are any numbers missing results
-        //or get random numbers for indicies into columns, perform operation and update
-        let currentRows = UInt32(currentRowsFilled)
-        
-        let index1 = Int(arc4random_uniform(currentRows))
-        let index2 = Int(arc4random_uniform(currentRows))
-        var newValue = -1
-        var updatedResults: [Number] = []
-        for num in invalidResults {
-            
-            let value1 = numAtCol(0, row: index1)!.value
-            let value2 = numAtCol(4, row: index2)!.value
-            
-            switch levelNum {
-            case -1:
-                newValue = value1+value2
-            case -2:
-                newValue = value1-value2
-            case -3:
-                newValue = value1*value2
-            case -4:
-                newValue = value1/value2
-            default:
-                newValue = -1
-            }
-            
-            num.value = newValue
-            num.update(newValue)
-            
-            updatedResults.append(num)
-        }
-            return updatedResults
-        
-    }
-    
-    func addNewRow() -> Set<Number> {
-        //logic to add new row after unsuccessful match OR just to add
-        //createEquations(1)
-        //new row will be stored in values[currentRowsFilled,...]
+    func addNewRows(numberRows:Int) -> Set<Number> {
+        //logic to add new row after unsuccessful match or first fill
+        //new dropped row will be stored in values[currentRowsFilled,...]
         
         var newSet = Set<Number>()
-
+        
+        var row = 0
+        
         var numberType: NumberType
-        let row = currentRowsFilled
-        //make new equation values
-        //work backwards instead??
-        
-        //get max result size, then generate a random number to op with it
-        var value1 = Int(arc4random_uniform(randRange)) // can change number passed to random fxn to change difficulty
-        var value2 = Int(arc4random_uniform(randRange))
-        
-        var result: Int
-        
-        //make value1 greater than value 2
-        if value2 > value1 {
-            let temp1 = value1
-            let temp2 = value2
-            
-            value1 = temp2
-            value2 = temp1
+        if numberRows == 1 {
+            //if only 1, then just dropping a new row
+            row = currentRowsFilled
         }
         
-        switch levelNum{
-        case -1:
-            result = value1 + value2
-        case -2:
-            result = value1 - value2
-        case -3:
-            result = value1 * value2
-        case -4:
-            while value1%value2 != 0
-            {
-                value2 = value2+1
+        //array to hold equation values
+        var newValues = [Int]()
+        
+        for _ in 0..<numberRows {
+            //get new equation values
+            newValues = getEquationValues()
+            while newValues.isEmpty {
+                //spin until everything has initialized
+                newValues = getEquationValues()
             }
-            result = value1/value2
-        default:
-            result = value1+value2
-        }
-        
-        
-        for col in 0..<NumCol {
-            //only generate numbers for valid columns
-            if col != 1 && col != 2 && col != 3 && col != 5 {
-                switch col {
-                case 0:
-                    numberType = NumberType.Operand
-                    let number = Number(col: col, row: row, value: value1, numberType: numberType, prevY: row)
-                    numbers[col,row] = number
-                    newSet.insert(number)
-                case 4:
-                    numberType = NumberType.Operand
-                    let number = Number(col: col, row: row, value: value2, numberType: numberType, prevY: row)
-                    numbers[col,currentRowsFilled] = number
-                    newSet.insert(number)
-                case 6:
-                    numberType = NumberType.Result
-                    let number = Number(col: col, row: row, value: result, numberType: numberType, prevY: row)
-                    numbers[col,currentRowsFilled] = number
-                    newSet.insert(number)
-                default:
-                    print("default", terminator: "")
+            let value1 = newValues[0]
+            let value2 = newValues[1]
+            let result = newValues[2]
+            
+            for col in 0..<NumCol {
+                //only generate numbers for valid columns
+                if col != 1 && col != 2 && col != 3 && col != 5 {
+                    switch col {
+                    case 0:
+                        numberType = NumberType.Operand
+                        let number = Number(col: col, row: row, value: value1, numberType: numberType, prevY: row)
+                        numbers[col,row] = number
+                        newSet.insert(number)
+                    case 4:
+                        numberType = NumberType.Operand
+                        let number = Number(col: col, row: row, value: value2, numberType: numberType, prevY: row)
+                        numbers[col,currentRowsFilled] = number
+                        newSet.insert(number)
+                    case 6:
+                        numberType = NumberType.Result
+                        let number = Number(col: col, row: row, value: result, numberType: numberType, prevY: row)
+                        numbers[col,currentRowsFilled] = number
+                        newSet.insert(number)
+                    default:
+                        print("default", terminator: "")
+                    }
                 }
             }
+            row = row+1
+            currentRowsFilled = currentRowsFilled + 1
         }
-        currentRowsFilled = currentRowsFilled + 1
         return newSet
-        
     }
     
-    func getCurrentRowsFilled() -> Int {
-        var numRows = 0
-        for row in 0..<10 {
-            if containsNumber(0, row: row){
-                numRows = numRows+1
-            }
-        }
-        currentRowsFilled = numRows
-        return currentRowsFilled
-    }
-    
-    func setCurrentRowsFilled(newRowsFilled: Int) {
-        currentRowsFilled = newRowsFilled
-    }
-    
-    func updateCurrentRowsFilled() {
-        var numRows = 0
-        for row in 0..<10 {
-            if containsNumber(0, row: row){
-                numRows = numRows+1
-            }
-        }
-        currentRowsFilled = numRows
-    }
-    
-    func containsNumber(col: Int, row: Int) -> Bool {
-
-            if numbers[col,row] != nil {
-                return true
-            } else {
-                return false
-            }
-        
-        }
-    
-    func isValidEquation(numsToCheck: Array<Number>) -> Bool
-    {
-        if numsToCheck.count == 4 {
-            //check if its a valid equation
-            
-            let result = numsToCheck[3].value
-            let value2 = numsToCheck[2].value
-            let op = numsToCheck[1].value
-            let value1 = numsToCheck[0].value
-            
-            switch op {
-            case -1:
-                if value1+value2 == result {
-                    return true
-                    
-                } else {
-
-                    return false
-                }
-            case -2:
-                if value1-value2 == result {
-                    //print("equation: \(value2) - \(value1) = \(result)")
-                    //print(" ")
-                    return true
-                } else {
-                    //print("equation: \(value2) - \(value1) = \(result)")
-                    //print(" ")
-                    return false
-                }
-            case -3:
-                if value1*value2 == result {
-                    return true
-                } else {
-                    return false
-                }
-            default:
-                return false
-            }
-            
-        } else {
-            print("false", terminator: "")
-            return false
-        }
-    }
-    
-    func getDifficulty() -> Int {
-        return difficulty
-    }
-    
-    
-    func setDifficulty(newDifficulty: Int) {
-        
-        difficulty = newDifficulty
-        
-        switch difficulty {
-        case 2:
-            //randRange = 50
-            randRange = 20 //testing
-        case 3:
-            //randRange = 100
-            randRange = 50 //testing
-        default:
-            randRange = 100
-        }
-        
-    }
-    
-    func getLevel() -> Int {
-        return levelNum
-    }
-    
-    func setLevel(newLevelNum: Int) {
-        levelNum = newLevelNum
-        if levelNum == -2 {
-            //remove add sprite, put subtraction
-        }
-    }
-    
-    func clearBoard (numbersToRemove: [Number]) {
+    func clearBoard (numbersToRemove: [Number], clearOperator: Bool) {
         for num in numbersToRemove {
-            if num.numberType.rawValue < 3 {  //don't remove operator from grid
+            if clearOperator {
                 numbers[num.col, num.row] = nil
             }
+            else {
+                if num.numberType.rawValue < 3 {  //don't remove operator from grid
+                    numbers[num.col, num.row] = nil
+                }
+            }
         }
         
+        currentRowsFilled = 0
     }
     
     func removeNumbers(numbersToRemove: Array<Number>) {
         for num in numbersToRemove {
             if num.numberType.rawValue < 3 {  //don't remove operator from grid
-               numbers[num.col, num.row] = nil
+                numbers[num.col, num.row] = nil
             }
             
         }
         currentRowsFilled = currentRowsFilled-1
     }
-
     
-    func updatePrevY() {
-        for col in 0..<7 {
-            
-            if col == 0 || col == 4 || col == 6 {
-                for row in 0..<currentRowsFilled {
-                    numbers[col,row]!.prevY = numbers[col,row]!.row
-                }
-            }
-        }
-    }
     
+    
+    ////////////////////////functions for shuffling the game board/////////////////////////////////
     func shuffleBoard() -> [[Number]] {
+        //updateCurrentRowsFilled()
         
         updatePrevY()
-    
+        
         var columns = [[Number]]()
         
         shuffle()
@@ -521,7 +353,22 @@ class Level {
             columns.append(array)
         }
         
-       return columns
+        return columns
+    }
+    
+    func updatePrevY() {
+        
+        for col in 0..<7 {
+            
+            if col == 0 || col == 4 || col == 6 {
+                for row in 0..<currentRowsFilled {
+                    if numbers[col,row] != nil {
+                        numbers[col,row]!.prevY = numbers[col,row]!.row
+                        
+                    }
+                }
+            }
+        }
     }
     
     func shuffle(){
@@ -546,6 +393,7 @@ class Level {
             }
         }
         checkForSwap() //make sure every column had at least 1 swap
+        
     }
     
     func swap(colToSwap: Int, rowIndex1: Int, rowIndex2:Int) {
@@ -560,18 +408,19 @@ class Level {
     }
     
     func checkForSwap() {
-        
+        //updateCurrentRowsFilled()
         var swaps = 0
         
         for col in 0..<NumCol {
             if col == 0 || col == 4 || col == 6  {
                 for row in 0..<currentRowsFilled {
-                        //make sure at least 1 number has new place
-                        //if not perform a random swap
-                    if numAtCol(col, row: row)!.row != numAtCol(col, row: row)!.prevY {
+                    //make sure at least 1 number has new place
+                    //if not perform a random swap
+                    if numbers[col, row] != nil{
+                        if numAtCol(col, row: row)!.row != numAtCol(col, row: row)!.prevY {
                             swaps = swaps+1
+                        }
                     }
-                    
                 }
                 if swaps == 0 {
                     //perform a swap
@@ -590,45 +439,292 @@ class Level {
         }
     }
     
-    func hasValidResults() -> [Number] {
-        //checking that there is at least one combo of numbers in columns a and b that results in a value in column c
-        var possibleResults:[Int] = []
-        var invalidResults:[Number] = []
+    /////////////functions used to detect invalid board settings//////////////////////////////////
+    func invalidNumbers() -> Bool {
         
-        var value1 = -1
-        var value2 = -1
-        var result = -1
+        //check that the numbers on the board can result in a valid result for that level and difficulty
+        //if there is anything invalid, update the numbers to update array and return true
+        newNumbers.removeAll()
+        
+        let possibleResults:[Int] = getPossibleResults()
 
-        for row in 0..<getCurrentRowsFilled() {
-            
-            value1 = numAtCol(0, row: row)!.value
-            
-            for row1 in 0..<getCurrentRowsFilled() {
-                value2 = numAtCol(4, row: row1)!.value
-            
-                switch levelNum {
-                case -1:
-                    result = value1+value2
-                case -2:
-                    result = value1-value2
-                case -3:
-                    result = value1*value2
-                case -4:
-                    result = value1/value2
-                default:
-                    result = -1
-                    
-                }
-                possibleResults.append(result)
+        
+        //if there is nothing in possible results, then there is no valid combination of numbers on the board
+        if possibleResults.count == 0 {
+            //choose a result from column three and change a number/numbers on the board to make it valid
+            newNumbers = updateInvalidEquations()
+
+            return true
+        } else {
+            //check that the results listed are valid, if not change invalid results to valid ones
+            let invalidResults = checkAllResultsValid(possibleResults) //array of results that have no matching combo of numbers
+            if invalidResults.count > 0 { //there is at least one invalid result to update
+                newNumbers = updateInvalidResults(possibleResults, invalidResults: invalidResults)
+
+                return true
             }
         }
-        for row in 0..<getCurrentRowsFilled() {
-            if !possibleResults.contains(numAtCol(6, row: row)!.value) {
-
-                invalidResults.append(numAtCol(6, row: row)!)
+        
+        return false
+        
+    }
+    
+    func getPossibleResults() -> [Int] {
+        var num1 = 0
+        var num2 = 0
+        var result = -1
+        
+        var validResults:[Int] = []
+        
+        for row in 0..<9 {
+            if numbers[0,row] != nil {
+                num1 = numbers[0,row]!.value
+                for row in 0..<9 {
+                    
+                    if numbers[4,row] != nil {
+                        num2 = numbers[4,row]!.value
+                        //check if result is valid within difficulty range settings
+                        //append to a valid results array if it is
+                        //result equals operation on num1 and num2
+                        result = checkValid(num1, num2: num2, calculating: false)
+                        if result >= 0 && !validResults.contains(result) { //only add if not already in list
+                            validResults.append(result)
+                        }
+                        
+                    }
+                    
+                }
+            }
+        }
+        return validResults
+    }
+    
+    func checkAllResultsValid(possibleResults:[Int]) -> [Number] {
+        var invalidResults: [Number] = []
+        for row in 0..<9 {
+            if numbers[6, row] != nil {
+                //there's a number here, check if it's in the possible results list
+                //if it is, it's fine, if not add to invalid results array
+                let num1 = numbers[6,row]!.value
+                if !possibleResults.contains(num1) {
+                    invalidResults.append(numbers[6,row]!)
+                }
             }
         }
         return invalidResults
+    }
+    
+    
+    func updateInvalidResults(validResults:[Int], invalidResults:[Number]) -> [Number] {
+        
+        var numbersToUpdate:[Number] = []
+        
+        for num in invalidResults {
+            //get a random index into the valid results array and set it's value equal to that
+            let count = UInt32(validResults.count-1)
+            let randIndex = Int(arc4random_uniform(count))
+            
+            let newValue = validResults[randIndex]
+            num.value = newValue
+            num.update(newValue)
+            numbersToUpdate.append(num)
+        }
+        return numbersToUpdate
+    }
+    
+    func updateInvalidEquations() -> [Number] {
+        //get a random result from column 6 and force there to be a combo of numbers that results in it
+        //or just create a new random equation and reset the sprites on the board at row 0 to be that, shuffle is called after anyway
+        /*let rowCount = UInt32(currentRowsFilled)
+         let randIndex = Int(arc4random_uniform(rowCount))*/
+        var numbersToUpdate = [Number]()
+        var newValues = getEquationValues()
+        
+        while newValues.isEmpty {
+            //spin until everything has initialized
+            newValues = getEquationValues()
+        }
+        
+        //set the bottom most row to be equal to new equation
+        if numbers[0,0] != nil && numbers[4,0] != nil && numbers[6,0] != nil {
+            let num1 = numbers[0,0]
+            let num2 = numbers[4,0]
+            let num3 = numbers[6,0]
+            
+            let newValue1 = newValues[0]
+            let newValue2 = newValues[1]
+            let newValue3 = newValues[2]
+            
+            num1!.value = newValue1
+            num1?.update(newValue1)
+            numbersToUpdate.append(num1!)
+            
+            num2!.value = newValue2
+            num2?.update(newValue2)
+            numbersToUpdate.append(num2!)
+            
+            num3!.value = newValue3
+            num3?.update(newValue3)
+            numbersToUpdate.append(num3!)
+        }
+        return numbersToUpdate
+    }
+    
+    func checkValid(num1:Int, num2:Int, calculating: Bool) -> Int {
+        //checks whether the combination of a number from column1 and column2 results in a valid or correct result
+        var result = -1
+        
+        switch levelNum {
+        case -1:
+            result = num1 + num2
+            if calculating {
+                return result
+            }
+            switch difficulty {
+            case 1:
+                if result <= difficulty1 {
+                    return result
+                }
+            case 2:
+                if result <= difficulty2 {
+                    return result
+                }
+            case 3:
+                if result <= difficulty3 {
+                    return result
+                }
+            default:
+                return -1
+            }
+        case -2:
+            result = num1 - num2
+            if calculating {
+                return result
+            }
+            if result >= 0 {
+                return result
+            }
+        case -3:
+            result = num1*num2
+            if calculating {
+                return result
+            }
+            switch difficulty {
+            case 1:
+                if result <= difficulty1 {
+                    return result
+                }
+            case 2:
+                if result <= difficulty2 {
+                    return result
+                }
+            case 3:
+                if result <= difficulty3 {
+                    return result
+                }
+            default:
+                return -1
+            }
+        case -4:
+            if num1%num2 == 0 {
+                result = num1/num2
+                return result
+            }
+        default:
+            return -1
+        }
+        return -1
+    }
+    
+    
+    //////////////////////////getters and setters/////////////////////////////
+    func getDifficulty() -> Int {
+        return difficulty
+    }
+    
+    func setDifficulty(newDifficulty: Int) {
+        
+        difficulty = newDifficulty
+        
+        switch difficulty {
+        case 1:
+            randRange = UInt32(difficulty1)
+        case 2:
+            randRange = UInt32(difficulty2)
+        case 3:
+            randRange = UInt32(difficulty3)
+        default:
+            randRange = UInt32(difficulty2)
+        }
+        
+    }
+    
+    func getLevel() -> Int {
+        return levelNum
+    }
+    
+    func setLevel(newLevelNum: Int) {
+        levelNum = newLevelNum
+    }
+    
+    func getNewNumbers() -> [Number] {
+        return newNumbers
+    }
+    
+    func getCurrentRowsFilled() -> Int {
+        
+        return currentRowsFilled
+    }
+    
+    func setIsFixedLevel(fixed: Bool) {
+        isFixedLevel = fixed
+    }
+    
+    func setCurrentRowsFilled(newRowsFilled: Int) {
+        currentRowsFilled = newRowsFilled
+    }
+    
+    //function to access Number object as specific position in grid
+    func numAtCol(col: Int, row: Int) -> Number? {
+        
+        assert(col >= 0 && col < NumCol)
+        assert(row >= 0 && row < NumRow)
+        return numbers[col,row]
+    }
+    
+    func containsNumber(col: Int, row: Int) -> Bool {
+        
+        if numbers[col,row] != nil {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    
+    
+    func printBoard() {
+        //print method for testing
+        for row in (0..<currentRowsFilled+1).reverse() {
+            
+            var num1 = "nil"
+            
+            var num2 = "nil"
+            
+            var num3 = "nil"
+            
+            if numbers[0,row] != nil {
+                num1 = String(numbers[0,row]!.value)
+            }
+            if numbers[4,row] != nil {
+                num2 = String(numbers[4,row]!.value)
+            }
+            if numbers[6,row] != nil {
+                num3 = String(numbers[0,row]!.value)
+            }
+            
+            print("[ \(num1)   \(num2)   \(num3)]")
+        }
     }
     
 }

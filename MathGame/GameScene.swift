@@ -25,15 +25,19 @@ class GameScene: SKScene {
     var swipeFromCol: Int?
     var swipeFromRow: Int?
     
+    var isTouchingBoard = false
+    
     var numbersTouched = [Number]()
     var numbersToClear = [Number]()
-
+    
     
     var selectionSpriteList = [SKSpriteNode()]
     var incorrectSpriteList = [SKSpriteNode()]
     var incorrectSprite = SKSpriteNode()
     var opSpriteLayer = SKSpriteNode()
+    var startBackground = SKSpriteNode()
     
+    var startTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
     
     var swipeHandler: ((Array<Number>) -> ())?
     
@@ -49,7 +53,11 @@ class GameScene: SKScene {
         let background = SKSpriteNode(imageNamed: "Background") //sprite node named background, containing backgroudn sprite
         addChild(background)
         
+        startBackground = SKSpriteNode(imageNamed: "startBackground")//background for start screen, add on top so can be removed
+        addChild(startBackground)
+        
         addChild(gameLayer)
+        
         
         let layerPos = CGPoint(
             x: -TileWidth * CGFloat(NumCol) / 2,
@@ -57,6 +65,10 @@ class GameScene: SKScene {
         
         numberLayer.position = layerPos
         gameLayer.addChild(numberLayer)
+    }
+    
+    func removeStartBackground(){
+        startBackground.removeFromParent()
     }
     
     func addSpritesForNumbers(number: Set<Number>) {
@@ -77,18 +89,25 @@ class GameScene: SKScene {
     func convertPoint(point: CGPoint) -> (success: Bool, column: Int, row: Int) {
         if point.x >= 0 && point.x < CGFloat(NumCol)*TileWidth &&
             point.y >= 0 && point.y < CGFloat(NumRow)*TileHeight {
-                return (true, Int(point.x / TileWidth), Int(point.y / TileHeight))
+            return (true, Int(point.x / TileWidth), Int(point.y / TileHeight))
         } else {
             return (false, 0, 0)  // invalid location
         }
     }
     
+    func getTouchingBoard() -> Bool {
+        return isTouchingBoard
+    }
+    
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
+        isTouchingBoard = false
+        
         if let handler = swipeHandler {
+            
             handler(numbersTouched)
         }
-
+        
         numbersTouched.removeAll() //clear array for next swipe movement
         hideSelectionIndicator()
     }
@@ -120,7 +139,7 @@ class GameScene: SKScene {
                 let num = level.numAtCol(col, row: row)
                 
                 if col == 6 {
-                    //allow up and down swipes within answer column
+                    //allow up and down swipes within columns -- doesn't work, too easy to accidentally swipe on something else
                     if col == prevNum?.col && (row > prevNum?.row || row < prevNum?.row) {
                         //remove highlight from last number touched
                         
@@ -146,13 +165,15 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        //convert touch location to point relative to cookiesLayer
+        isTouchingBoard = true
+        
+        //convert touch location to point relative to numbers layer
         let touch = touches.first
         let location = touch!.locationInNode(numberLayer)
         
         //find out if touch is inside a square on the level grid (basically user put finger somewhere inside grid)
         let(success, col, row) = convertPoint(location)
-   
+        
         if success{
             //verify touch is on number, not empty square
             if level.containsNumber(col, row: row){
@@ -175,11 +196,11 @@ class GameScene: SKScene {
         
         
         if let sprite = num.sprite {
-            if num.numberType.rawValue <= 3{
+            if num.numberType.rawValue <= 6{
                 let texture = SKTexture(imageNamed: num.highlightedSpriteName)
                 selectionSprite.size = texture.size()
                 selectionSprite.runAction(SKAction.setTexture(texture))
-            
+                
                 sprite.addChild(selectionSprite)
                 selectionSprite.alpha = 1.0
                 
@@ -195,11 +216,9 @@ class GameScene: SKScene {
         selectionSpriteList.removeAll()
     }
     
-    func showIncorrectIndicator(completion:() -> ())
+    func showIncorrectIndicator(numbers: Array<Number>)
     {
-        var incorrectSpriteList = [SKSpriteNode()]
-        
-        for num in numbersTouched {
+        for num in numbers {
             if let sprite = num.sprite {
                 incorrectSprite = SKSpriteNode()
                 let texture = SKTexture(imageNamed: num.incorrectSpriteName)
@@ -211,33 +230,36 @@ class GameScene: SKScene {
                 incorrectSpriteList.append(incorrectSprite)
             }
         }
-        
+    }
+    
+    func fadeIncorrectIndicator(numbers: Array<Number>, completion:() -> ())
+    {
         for sprite in incorrectSpriteList {
-         sprite.runAction(SKAction.sequence([SKAction.fadeOutWithDuration(2),SKAction.removeFromParent()]))
+            sprite.runAction(SKAction.sequence([SKAction.fadeOutWithDuration(0.75),SKAction.removeFromParent()]))
         }
         //wait for numbers to fade back to normal
-        runAction(SKAction.waitForDuration(2), completion: completion)
+        runAction(SKAction.waitForDuration(0.75), completion: completion)
         incorrectSpriteList.removeAll()
     }
     
-    func showCorrectIndicator(){
+    func showCorrectIndicator(numbers: Array<Number>){
         //don't need to layer, just replace sprite with green highlighted sprite
-        for num in numbersTouched {
+        for num in numbers {
             if let sprite = num.sprite {
                 let texture = SKTexture(imageNamed: num.correctSpriteName)
-                if num.numberType.rawValue == 3 {
+                if num.numberType.rawValue >= 3 {
                     
                     //layer sprite on operator
                     opSpriteLayer = SKSpriteNode()
                     if opSpriteLayer.parent != nil {
                         opSpriteLayer.removeFromParent()
-                     }
+                    }
                     opSpriteLayer.size = texture.size()
                     opSpriteLayer.runAction(SKAction.setTexture(texture))
                     
                     sprite.addChild(opSpriteLayer)
                 }
-                
+                    
                 else if num.numberType.rawValue < 3 {
                     sprite.alpha = 1.0
                     sprite.texture = texture
@@ -245,114 +267,155 @@ class GameScene: SKScene {
             }
         }
     }
-
-    func animateCorrectEquation(completion:() -> ()) {
-        showCorrectIndicator()
-        for num in numbersTouched {
+    
+    func animateCorrectEquation( numbers: Array<Number>, completion:() -> ()) {
+        
+        //showCorrectIndicator(numbers)
+        for num in numbers{
             //fade back to normal if operator
-            if num.numberType.rawValue == 3 {
+            if num.numberType.rawValue >= 3 {//fade out .3
                 opSpriteLayer.runAction(SKAction.sequence([SKAction.fadeOutWithDuration(0.3),SKAction.removeFromParent()]))
             }
             else if num.numberType.rawValue < 3 { //remove from board if its not the operator
                 if let sprite = num.sprite {
                     if sprite.actionForKey("removing") == nil {
-                        let scaleAction = SKAction.scaleTo(0.1, duration: 1.5)
+                        let scaleAction = SKAction.scaleTo(0.1, duration: 1)//duration1
                         scaleAction.timingMode = .EaseOut
                         sprite.runAction(SKAction.sequence([scaleAction, SKAction.removeFromParent()]), withKey:"removing")
                     }
                 }
             }
         }
-
+        
         //wait for all numbers to move before allowing gameplay to continue
-        runAction(SKAction.waitForDuration(1.5), completion: completion)
+        runAction(SKAction.waitForDuration(1.2), completion: completion)
     }
     
     func clearSprites() {
-        
-        //or use remove children method???????
         for row in 0..<10 {
             
             for col in 0..<7 {
-                if col != 1 && col != 2 && col != 3 && col != 5 {
+                if col != 1 && col != 3 && col != 5 {
                     if level.containsNumber(col, row: row) {
-                        print("[ \(col), \(row)] : \(level.containsNumber(col, row: row))")
+                        //print("[ \(col), \(row)] : \(level.containsNumber(col, row: row))")
                         numbersToClear.append((level.numAtCol(col, row: row))!)
-                }
-            }
-
-            }
-        }
-        
-    }
-    
-    
-    func animateClearBoard() {
-        clearSprites()
-        for num in numbersToClear {
-            if num.numberType.rawValue < 3 {
-                if let sprite = num.sprite {
-                    if sprite.actionForKey("removing") == nil {
-                        let scaleAction = SKAction.scaleTo(0.1, duration: 1.5)
-                        scaleAction.timingMode = .EaseOut
-                        sprite.runAction(SKAction.sequence([scaleAction, SKAction.removeFromParent()]), withKey:"removing")
                     }
                 }
                 
             }
         }
-        level.clearBoard(numbersToClear)
+        
     }
     
     
+    func animateClearBoard(removeOperator:Bool) {
+        clearSprites()
+        var duration = 0.0
+        if removeOperator == true {
+            duration = 0.5
+        } else {
+            duration = 1.25
+        }
+        
+        for num in numbersToClear {
+            if removeOperator {
+                if let sprite = num.sprite {
+                    if sprite.actionForKey("removing") == nil {
+                        let scaleAction = SKAction.scaleTo(0.1, duration: duration) //duration 1.5
+                        scaleAction.timingMode = .EaseOut
+                        sprite.runAction(SKAction.sequence([scaleAction, SKAction.removeFromParent()]), withKey:"removing")
+                    }
+                }
+            }
+            else {
+                
+                if num.numberType.rawValue < 3 {
+                    if let sprite = num.sprite {
+                        if sprite.actionForKey("removing") == nil {
+                            let scaleAction = SKAction.scaleTo(0.1, duration: duration) //duration 1.5
+                            scaleAction.timingMode = .EaseOut
+                            sprite.runAction(SKAction.sequence([scaleAction, SKAction.removeFromParent()]), withKey:"removing")
+                        }
+                    }
+                    
+                }
+                
+            }
+        }
+        level.clearBoard(numbersToClear, clearOperator: removeOperator)
+    }
+    
+    func drawNumberChanges() {
+        //perform check after the numbers have dropped down to ensure accuracy
+        //make call to get invalid numbers array
+        let numbersToChange = level.getNewNumbers()
+        for num in numbersToChange {
+            //remove sprite that's there and change the sprite to the correct one
+            num.sprite?.removeFromParent()
+            let sprite = SKSpriteNode(imageNamed: num.spriteName)
+            sprite.position = pointForColumn(num.col, row: num.row)
+            numberLayer.addChild(sprite)
+            num.sprite = sprite
+        }
+    }
+    
     func animateNumberDrop(col: [[Number]], completion: () -> ()) {
-        //drops completely new row down on top of existing rows
-        //needs to happen after incorrect and after x amount of time has passed (tracked via timer)
-        //need to compute duration because of varying number of numbers dropping
+        //drops existing rows down
+        //need to compute duration because of varying locations of numbers dropping
+        
+        /*//first check for invalid results and update
+         if level.getNewResults().count > 0 {
+         for num in level.getNewResults() {
+         //change the sprite to the correct one
+         num.sprite?.removeFromParent()
+         let sprite = SKSpriteNode(imageNamed: num.spriteName)
+         sprite.position = pointForColumn(num.col, row: num.row)
+         numberLayer.addChild(sprite)
+         num.sprite = sprite
+         }
+         level.clearNewResults()
+         }*/
+        
         var longestDuration: NSTimeInterval = 0
         
-        if level.getNewResults().count > 0 {
-            for num in level.getNewResults() {
-                //change the sprite to the correct one
-                num.sprite?.removeFromParent()
-                let sprite = SKSpriteNode(imageNamed: num.spriteName)
-                sprite.position = pointForColumn(num.col, row: num.row)
-                numberLayer.addChild(sprite)
-                num.sprite = sprite
-            }
-            level.clearNewResults()
-        }
-        
+        var y1: CGFloat = 0
+        var y2: CGFloat = 0
         for array in col {
             for (idx, number) in array.enumerate() {
-                
-                let newPosition = pointForColumn(number.col, row: number.row)
-                let delay = 0.05 + 0.15*NSTimeInterval(idx)
-                //duration of animation depends on how far number drops, 0.1 second per tile
-                let sprite = number.sprite!
-                let duration = NSTimeInterval(((sprite.position.y - newPosition.y) / TileHeight) * 0.1) * 1
-                //calculate which has longest duration
-                longestDuration = max(longestDuration, duration + delay)
-                //perform animation (delay + movement)
-                let moveAction = SKAction.moveTo(newPosition, duration: duration)
-                moveAction.timingMode = .EaseOut
-                
-                sprite.runAction(
-                    SKAction.sequence([
-                        SKAction.waitForDuration(delay),
-                        moveAction])
-                )
+                if(number.sprite != nil){
+                    let newPosition = pointForColumn(number.col, row: number.row)
+                    let oldPosition = pointForColumn(number.col, row: number.prevY)
+                    let delay = 0.25 + 0.15*NSTimeInterval(idx) //.05+
+                    //duration of animation depends on how far number drops, 0.1 second per tile
+                    
+                    let sprite = number.sprite!
+                    //check if sprite is moving up or down
+                    y1 = oldPosition.y
+                    y2 = newPosition.y
+                    if newPosition.y > oldPosition.y{
+                        y1 = newPosition.y
+                        y2 = oldPosition.y
+                    }
+                    let duration = NSTimeInterval(((y1 - y2) / TileHeight) * 0.1) * 1.0
+                    //calculate which has longest duration
+                    longestDuration = max(longestDuration, duration + delay)
+                    //perform animation (delay + movement)
+                    let moveAction = SKAction.moveTo(newPosition, duration: duration)
+                    moveAction.timingMode = .EaseOut
+                    
+                    sprite.runAction(SKAction.sequence([SKAction.waitForDuration(delay),moveAction]))
+                }
             }
-            //wait for all numbers to fall before allowing gameplay to continue
-            runAction(SKAction.waitForDuration(longestDuration), completion: completion)
+            
         }
+        //wait for all numbers to fall before allowing gameplay to continue
+        runAction(SKAction.waitForDuration((longestDuration)), completion: completion)
         
-
     }
     
     func animateShuffle(col: [[Number]], completion: () -> ()) {
         //logic for animating shuffle (swapping numbers within columns)
-
+        
         var longestDuration: NSTimeInterval = 0
         var y1: CGFloat = 0
         var y2: CGFloat = 0
@@ -363,7 +426,7 @@ class GameScene: SKScene {
                     let oldPosition = pointForColumn(number.col, row: number.prevY)
                     let delay = 0.05 + 0.15*NSTimeInterval(idx)
                     //duration of animation depends on how far number drops, 0.1 second per tile
-                
+                    
                     let sprite = number.sprite!
                     //check if sprite is moving up or down
                     y1 = oldPosition.y
@@ -372,28 +435,31 @@ class GameScene: SKScene {
                         y1 = newPosition.y
                         y2 = oldPosition.y
                     }
-                    let duration = NSTimeInterval(((y1 - y2) / TileHeight) * 0.1) * 5
+                    let duration = NSTimeInterval(((y1 - y2) / TileHeight) * 0.1) * 4.5 ///*5 originally
                     //calculate which has longest duration
                     longestDuration = max(longestDuration, duration + delay)
                     //perform animation (delay + movement)
                     let moveAction = SKAction.moveTo(newPosition, duration: duration)
                     moveAction.timingMode = .EaseOut
-                
+                    
                     sprite.runAction(SKAction.sequence([SKAction.waitForDuration(delay),moveAction]))
                 }
             }
-            //wait for all numbers to move before allowing gameplay to continue
-            runAction(SKAction.waitForDuration(longestDuration), completion: completion)
         }
-        
+        //wait for all numbers to move before allowing gameplay to continue
+        runAction(SKAction.waitForDuration(longestDuration), completion: completion)
     }
     
     func animateNewDrop(numbers: Set<Number>, completion: () -> ()) {
         
-        //drops existing rows down
-        //take top most row and drop from top of screen to correct location
         
-        let startRow = level.getCurrentRowsFilled()
+        //drops completely new row down on top of existing rows
+        //needs to happen after incorrect and after x amount of time has passed (tracked via timer)
+        
+        let startRow = level.getCurrentRowsFilled()+1
+        
+        //let startRow = 7
+        startTime = CFAbsoluteTimeGetCurrent()
         var duration: NSTimeInterval = 0
         for number in numbers {
             let sprite = SKSpriteNode(imageNamed: number.spriteName)
@@ -401,7 +467,7 @@ class GameScene: SKScene {
             numberLayer.addChild(sprite)
             number.sprite = sprite
             
-            duration = NSTimeInterval(startRow - number.row)*1.25
+            duration = NSTimeInterval(startRow - number.row)*0.5  //*0.75 for 1.5
             
             let newPosition = pointForColumn(number.col, row: number.row)
             let moveAction = SKAction.moveTo(newPosition, duration: duration)
@@ -410,8 +476,21 @@ class GameScene: SKScene {
             sprite.alpha = 0
             
             sprite.runAction(SKAction.group([SKAction.fadeInWithDuration(0.05), moveAction]))
+            startTime = CFAbsoluteTimeGetCurrent()
         }
+        
         runAction(SKAction.waitForDuration(duration), completion: completion)
+        
+        //duration = 1.5 here
+        //somehow time and communicate how much of the duration time has passed to minimize waiting on correct animations
+        
+    }
     
+    func getDuration() -> Double {
+        //calculates time until the drop has finished animating, used to minimize waiting on correct animations
+        let timeElapsed = startTime - CFAbsoluteTimeGetCurrent()
+        let duration = 1.0 + (Double(timeElapsed))
+        return duration
+        
     }
 }
