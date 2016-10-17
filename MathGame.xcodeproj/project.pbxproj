@@ -39,7 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D4115FB01C20AAE50088B14C /* MathGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4115FB01C20AAE50088B14C /* Equation Mania.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Equation Mania.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4115FB31C20AAE50088B14C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D4115FB51C20AAE50088B14C /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		D4115FB71C20AAE50088B14C /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -97,7 +97,7 @@
 		D4115FB11C20AAE50088B14C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D4115FB01C20AAE50088B14C /* MathGame.app */,
+				D4115FB01C20AAE50088B14C /* Equation Mania.app */,
 				D4115FC81C20AAE50088B14C /* MathGameTests.xctest */,
 				D4115FD31C20AAE50088B14C /* MathGameUITests.xctest */,
 			);
@@ -143,9 +143,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D4115FAF1C20AAE50088B14C /* MathGame */ = {
+		D4115FAF1C20AAE50088B14C /* Equation Mania */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D4115FDC1C20AAE50088B14C /* Build configuration list for PBXNativeTarget "MathGame" */;
+			buildConfigurationList = D4115FDC1C20AAE50088B14C /* Build configuration list for PBXNativeTarget "Equation Mania" */;
 			buildPhases = (
 				D4115FAC1C20AAE50088B14C /* Sources */,
 				D4115FAD1C20AAE50088B14C /* Frameworks */,
@@ -155,9 +155,9 @@
 			);
 			dependencies = (
 			);
-			name = MathGame;
+			name = "Equation Mania";
 			productName = MathGame;
-			productReference = D4115FB01C20AAE50088B14C /* MathGame.app */;
+			productReference = D4115FB01C20AAE50088B14C /* Equation Mania.app */;
 			productType = "com.apple.product-type.application";
 		};
 		D4115FC71C20AAE50088B14C /* MathGameTests */ = {
@@ -234,7 +234,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D4115FAF1C20AAE50088B14C /* MathGame */,
+				D4115FAF1C20AAE50088B14C /* Equation Mania */,
 				D4115FC71C20AAE50088B14C /* MathGameTests */,
 				D4115FD21C20AAE50088B14C /* MathGameUITests */,
 			);
@@ -304,12 +304,12 @@
 /* Begin PBXTargetDependency section */
 		D4115FCA1C20AAE50088B14C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D4115FAF1C20AAE50088B14C /* MathGame */;
+			target = D4115FAF1C20AAE50088B14C /* Equation Mania */;
 			targetProxy = D4115FC91C20AAE50088B14C /* PBXContainerItemProxy */;
 		};
 		D4115FD51C20AAE50088B14C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D4115FAF1C20AAE50088B14C /* MathGame */;
+			target = D4115FAF1C20AAE50088B14C /* Equation Mania */;
 			targetProxy = D4115FD41C20AAE50088B14C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -343,6 +343,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -388,6 +389,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -403,6 +405,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
@@ -413,7 +416,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				BUNDLE_ID_SUFFIX = .dev;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MathGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -427,7 +431,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				BUNDLE_ID_SUFFIX = "";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MathGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -487,6 +492,86 @@
 			};
 			name = Release;
 		};
+		D4231CFB1DAFE80A00C94CD7 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Beta;
+		};
+		D4231CFC1DAFE80A00C94CD7 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				BUNDLE_ID_SUFFIX = .beta;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = MathGame/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MeganCorbett.MathGame;
+				PRODUCT_NAME = "Equation Mania Beta";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Beta;
+		};
+		D4231CFD1DAFE80A00C94CD7 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = MathGameTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MeganCorbett.MathGameTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MathGame.app/MathGame";
+			};
+			name = Beta;
+		};
+		D4231CFE1DAFE80A00C94CD7 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = MathGameUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MeganCorbett.MathGameUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = MathGame;
+				USES_XCTRUNNER = YES;
+			};
+			name = Beta;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -495,15 +580,17 @@
 			buildConfigurations = (
 				D4115FDA1C20AAE50088B14C /* Debug */,
 				D4115FDB1C20AAE50088B14C /* Release */,
+				D4231CFB1DAFE80A00C94CD7 /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D4115FDC1C20AAE50088B14C /* Build configuration list for PBXNativeTarget "MathGame" */ = {
+		D4115FDC1C20AAE50088B14C /* Build configuration list for PBXNativeTarget "Equation Mania" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D4115FDD1C20AAE50088B14C /* Debug */,
 				D4115FDE1C20AAE50088B14C /* Release */,
+				D4231CFC1DAFE80A00C94CD7 /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -513,6 +600,7 @@
 			buildConfigurations = (
 				D4115FE01C20AAE50088B14C /* Debug */,
 				D4115FE11C20AAE50088B14C /* Release */,
+				D4231CFD1DAFE80A00C94CD7 /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -522,6 +610,7 @@
 			buildConfigurations = (
 				D4115FE31C20AAE50088B14C /* Debug */,
 				D4115FE41C20AAE50088B14C /* Release */,
+				D4231CFE1DAFE80A00C94CD7 /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

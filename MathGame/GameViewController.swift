@@ -341,7 +341,7 @@ class GameViewController: UIViewController {
             NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: #selector(GameViewController.handleSwipes), userInfo: nil, repeats: false)
         } else if seconds%dropSeconds == 0 && seconds > 0 {
             //automatically delay for a full drop time
-            let delay = 1.0
+            let delay = 0.25
             NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: #selector(GameViewController.handleSwipes), userInfo: nil, repeats: false)
         } else {
             handleSwipes()
