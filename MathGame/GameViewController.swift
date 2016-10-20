@@ -602,7 +602,7 @@ class GameViewController: UIViewController {
     func hideMessagePanel() {
         view.removeGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer = nil
-        mainMenuButton.hidden = false
+        //mainMenuButton.hidden = false
         messageImage.hidden = true
         scene.userInteractionEnabled = true
         startNewChallenge()
