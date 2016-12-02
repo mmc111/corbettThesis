@@ -9,20 +9,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MathGame/Number.swift"
-            timestampString = "496306605.674941"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "MathGame/Equation.swift"
             timestampString = "487187843.189462"
             startingColumnNumber = "9223372036854775807"
@@ -31,22 +17,6 @@
             endingLineNumber = "30"
             landmarkName = "init(opType:)"
             landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MathGame/Level.swift"
-            timestampString = "497453300.927172"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
-            landmarkName = "getEquationValues()"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -88,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MathGame/GameViewController.swift"
-            timestampString = "497460859.995344"
+            timestampString = "502392820.280576"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "928"
-            endingLineNumber = "928">
+            startingLineNumber = "1017"
+            endingLineNumber = "1017">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

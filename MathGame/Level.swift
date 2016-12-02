@@ -14,6 +14,7 @@ let NumCol = 7
 let NumRow = 10
 var levelNum: Int = -1 //testing addition
 
+var progress = [[Int]]()
 var score: Int = 0
 
 var difficulty: Int = 1 //need to change this dynamically throughout gameplay, default difficulty is one
@@ -22,6 +23,10 @@ var randRange: UInt32 = 5 //randrange is the max result value/ max value on boar
 let difficulty1 = 5
 let difficulty2 = 10
 let difficulty3 = 20
+
+var challengeCorrectChain = 0
+
+let increaseScore = 10 //amount to increase score by on correct match
 
 var currentRowsFilled = 0
 
@@ -33,7 +38,30 @@ var maxResultValue: Int = -1
 
 let numStartEquations = 3
 
-var isFixedLevel: Bool = false
+var loop: Bool = false
+
+var levelType = 0
+
+//var playGame: Bool = false
+
+var canDraw: Bool = false
+
+var correctTotal = 0
+var correctChain = 0
+var longestChain = 0
+var maxScore = 300 //score needed to pass to next difficulty level
+var highScore = 0
+var incorrectTotal = 0
+var incorrectChain = 0
+var incorrectAtTop = 0
+
+let fullLevel = 1
+let fixedLevel = 2
+let challengeLevel = 3
+
+var userID = 1
+
+var challengeModeHighScore = 0
 
 class Level {
     
@@ -50,9 +78,10 @@ class Level {
         
         //create a set of numbers including the operator to draw
         var set = Set<Number>()
-        
-        var op :Number
-        
+        var op: Number
+        var op1 = Number(col: 2, row: 3, value: -2, numberType: NumberType.SubOperator, prevY: -2)
+        var op2 = Number(col: 2, row: 4, value: -3, numberType: NumberType.MultOperator, prevY: -3)
+        var op3 = Number(col: 2, row: 5, value: -4, numberType: NumberType.DivOperator, prevY: -4)
         
         set = addNewRows(numStartEquations)
         
@@ -65,18 +94,58 @@ class Level {
             op = Number(col: 2, row: 2, value: -3, numberType: NumberType.MultOperator, prevY: -3)
         case -4:
             op = Number(col: 2, row: 2, value: -4, numberType: NumberType.DivOperator, prevY: -4)
+            
+        case -5: //challenge mode level 1, addition and subtraction
+            op = Number(col: 2, row: 2, value: -1, numberType: NumberType.AddOperator, prevY: -1)
+            op1 = Number(col: 2, row: 3, value: -2, numberType: NumberType.SubOperator, prevY: -2)
+        case -6: //challenge mode level 2, multiplication and division
+            op = Number(col: 2, row: 2, value: -3, numberType: NumberType.MultOperator, prevY: -3)
+            op1 = Number(col: 2, row: 3, value: -4, numberType: NumberType.DivOperator, prevY: -4)
+        case -7: //final level in challenge mode, all operator types available
+            op = Number(col: 2, row: 1, value: -1, numberType: NumberType.AddOperator, prevY: -1)
+            op1 = Number(col: 2, row: 2, value: -2, numberType: NumberType.SubOperator, prevY: -2)
+            op2 = Number(col: 2, row: 3, value: -3, numberType: NumberType.MultOperator, prevY: -3)
+            op3 = Number(col: 2, row: 4, value: -4, numberType: NumberType.DivOperator, prevY: -4)
         default:
             op = Number(col: 2, row: 2, value: -1, numberType: NumberType.AddOperator, prevY: -1)
-            
+            op1 = Number(col: 2, row: 3, value: -2, numberType: NumberType.SubOperator, prevY: -2)
+            op2 = Number(col: 2, row: 4, value: -3, numberType: NumberType.MultOperator, prevY: -3)
+            op3 = Number(col: 2, row: 5, value: -4, numberType: NumberType.DivOperator, prevY: -4)
         }
         
-        numbers[2,2] = op //operator position in grid
-        set.insert(op)
+        if levelNum > -7 {
+            numbers[2,2] = op //operator position in grid
+            set.insert(op)
+            if levelNum < -4 {
+                numbers[2,3] = op1
+                set.insert(op1)
+            }
+        } else {
+            numbers[2,1] = op
+            set.insert(op)
+            numbers[2,2] = op1
+            set.insert(op1)
+            numbers[2,3] = op2
+            set.insert(op2)
+            numbers[2,4] = op3
+            set.insert(op3)
+        }
+        
+        if levelNum < -4 {
+            
+            if levelNum == -7 {
+                numbers[2,4] = op2
+                set.insert(op2)
+                numbers[2,5] = op3
+                set.insert(op3)
+            }
+            
+        }
         
         return set //set will be used for displaying sprites
     }
     
-    func getEquationValues() -> [Int]{
+    func getEquationValues(equationType: Int) -> [Int]{
         //creates an array of a single valid equation and returns it
         var equationValues = [Int]()
         
@@ -84,7 +153,7 @@ class Level {
         var value2 = 0
         var result = 0
         
-        switch levelNum {
+        switch equationType {
         case -1:
             result = Int(arc4random_uniform(randRange))
             value1 = Int(arc4random_uniform(randRange))
@@ -173,7 +242,7 @@ class Level {
             
             result = value1/value2
             equationValues = [value1, value2, result]
-            
+
         default:
             print("default")
         }
@@ -189,10 +258,10 @@ class Level {
             
             let result = numsToCheck[3].value
             let value2 = numsToCheck[2].value
-            //let op = numsToCheck[1].value
+            let op = numsToCheck[1].value
             let value1 = numsToCheck[0].value
             
-            let calculatedResult = checkValid(value1, num2: value2, calculating: true)
+            let calculatedResult = checkValid(value1, num2: value2, opType: op, calculating: true)
             
             if result == calculatedResult {
                 return true
@@ -261,10 +330,10 @@ class Level {
         
         for _ in 0..<numberRows {
             //get new equation values
-            newValues = getEquationValues()
+            newValues = getEquationValues(getEquationType())
             while newValues.isEmpty {
                 //spin until everything has initialized
-                newValues = getEquationValues()
+                newValues = getEquationValues(getEquationType())
             }
             let value1 = newValues[0]
             let value2 = newValues[1]
@@ -444,10 +513,48 @@ class Level {
         
         //check that the numbers on the board can result in a valid result for that level and difficulty
         //if there is anything invalid, update the numbers to update array and return true
-        newNumbers.removeAll()
-        
-        let possibleResults:[Int] = getPossibleResults()
+        if newNumbers.count > 0 {
+            newNumbers.removeAll()
+        }
 
+        var possibleResults:[Int] = getPossibleResults(levelNum)
+        var opType = 0
+        var allPossibleResults:[[Int]] = [[Int]]()
+        
+        if levelNum < -4 {
+            if possibleResults.count > 0 {
+              possibleResults.removeAll()
+            }
+            
+            switch levelNum {
+            case -5:
+                opType = -2
+                while opType < 0 {
+                    let possibleResults1:[Int] = getPossibleResults(opType)
+                    allPossibleResults.append(possibleResults1)
+                    opType += 1
+                }
+                possibleResults = combinePossibleResults(allPossibleResults)
+            case -6:
+                opType = -4
+                while opType < -2 {
+                    let possibleResults1:[Int] = getPossibleResults(opType)
+                    allPossibleResults.append(possibleResults1)
+                    opType += 1
+                }
+                possibleResults = combinePossibleResults(allPossibleResults)
+            case -7:
+                opType = -4
+                while opType < 0 {
+                    let possibleResults1:[Int] = getPossibleResults(opType)
+                    allPossibleResults.append(possibleResults1)
+                    opType += 1
+                }
+                possibleResults = combinePossibleResults(allPossibleResults)
+            default:
+                print("default possibleResults")
+            }
+        }
         
         //if there is nothing in possible results, then there is no valid combination of numbers on the board
         if possibleResults.count == 0 {
@@ -469,7 +576,7 @@ class Level {
         
     }
     
-    func getPossibleResults() -> [Int] {
+    func getPossibleResults(op: Int) -> [Int] {
         var num1 = 0
         var num2 = 0
         var result = -1
@@ -486,17 +593,30 @@ class Level {
                         //check if result is valid within difficulty range settings
                         //append to a valid results array if it is
                         //result equals operation on num1 and num2
-                        result = checkValid(num1, num2: num2, calculating: false)
+                        result = checkValid(num1, num2: num2, opType: op, calculating: false)
                         if result >= 0 && !validResults.contains(result) { //only add if not already in list
-                            validResults.append(result)
+                                validResults.append(result)
                         }
-                        
                     }
                     
                 }
             }
         }
         return validResults
+    }
+    
+    func combinePossibleResults(allPossibleResults: [[Int]]) -> [Int] {
+        var results: [Int] = allPossibleResults[0]
+        
+        for arr in allPossibleResults {
+            for resultNum in arr {
+                if !results.contains(resultNum) {
+                    results.append(resultNum)
+                }
+                
+            }
+        }
+        return results
     }
     
     func checkAllResultsValid(possibleResults:[Int]) -> [Number] {
@@ -538,11 +658,13 @@ class Level {
         /*let rowCount = UInt32(currentRowsFilled)
          let randIndex = Int(arc4random_uniform(rowCount))*/
         var numbersToUpdate = [Number]()
-        var newValues = getEquationValues()
+        
+        
+        var newValues = getEquationValues(getEquationType())
         
         while newValues.isEmpty {
             //spin until everything has initialized
-            newValues = getEquationValues()
+            newValues = getEquationValues(getEquationType())
         }
         
         //set the bottom most row to be equal to new equation
@@ -570,11 +692,11 @@ class Level {
         return numbersToUpdate
     }
     
-    func checkValid(num1:Int, num2:Int, calculating: Bool) -> Int {
+    func checkValid(num1:Int, num2:Int, opType:Int, calculating: Bool) -> Int {
         //checks whether the combination of a number from column1 and column2 results in a valid or correct result
         var result = -1
         
-        switch levelNum {
+        switch opType {
         case -1:
             result = num1 + num2
             if calculating {
@@ -626,9 +748,11 @@ class Level {
                 return -1
             }
         case -4:
-            if num1%num2 == 0 {
-                result = num1/num2
-                return result
+            if num2 != 0 {
+                if num1%num2 == 0 {
+                    result = num1/num2
+                    return result
+                }
             }
         default:
             return -1
@@ -638,6 +762,14 @@ class Level {
     
     
     //////////////////////////getters and setters/////////////////////////////
+    func setCanDraw(draw: Bool) {
+        canDraw = draw
+    }
+    
+    func getCanDraw() -> Bool {
+        return canDraw
+    }
+    
     func getDifficulty() -> Int {
         return difficulty
     }
@@ -676,10 +808,6 @@ class Level {
         return currentRowsFilled
     }
     
-    func setIsFixedLevel(fixed: Bool) {
-        isFixedLevel = fixed
-    }
-    
     func setCurrentRowsFilled(newRowsFilled: Int) {
         currentRowsFilled = newRowsFilled
     }
@@ -701,7 +829,35 @@ class Level {
         }
     }
     
-    
+    func getEquationType() -> Int {
+        if levelNum >= -4 {
+            return levelNum
+        } else {
+            var equationType = 0
+            
+            switch levelNum {
+            case -5:
+                //return random number -1 or -2
+                equationType = Int(arc4random_uniform(2))
+                equationType = (equationType+1) * -1
+                
+                return equationType
+            case -6:
+                //return random number -3 or -4
+                equationType = Int(arc4random_uniform(2))
+                equationType = (equationType+3) * -1
+                return equationType
+            case -7:
+                //return random number -1 through -4
+                equationType = Int(arc4random_uniform(4))
+                equationType = (equationType+1) * -1
+                
+                return equationType
+            default:
+                return levelNum
+            }
+        }
+    }
     
     func printBoard() {
         //print method for testing
@@ -727,5 +883,217 @@ class Level {
         }
     }
     
+    func checkLevelChange() -> Bool {
+        //check if there should be a level change, if so call change level
+        if levelType == 3 {
+            if currentRowsFilled == 0 || challengeCorrectChain == 10 {
+                return true
+            }
+        } else {
+            if currentRowsFilled == 0 || correctChain >= 10 || score >= maxScore {
+                
+                return true
+            }
+        }
+        
+        return false
+    }
+    
+    func changeLevel() -> Bool {
+        //return whether the operator needs to be cleared on level change
+        var clearOp = false
+        
+        currentRowsFilled = 0
+        
+        //default increase difficulty
+        difficulty = difficulty+1
+    
+        //logic to change level number when difficulty is past max difficulty
+        if difficulty > 3 {
+            difficulty = 1
+            //full playthrough changes
+            if levelType == 1 {
+                clearOp = true
+                //move to next level/operator type (mastered all difficulties of the current operator type)
+                if levelNum == -4 {
+                    //loop back to random level to continue gameplay
+                    loop = true
+                    let nextLevel = Int(arc4random_uniform(4))
+                    levelNum = (nextLevel+1) * -1
+                    
+                } else {
+                    levelNum = levelNum-1
+                }
+                resetLevel()
+                //fixed level changes
+            } else if levelType == 2 {
+                loop = true
+            } else if levelType == 3 {
+                clearOp = true
+                challengeCorrectChain = 0
+                if levelNum == -7 {
+                    // loop back to random level to continue gameplay
+                    let nextLevel = Int(arc4random_uniform(7))
+                    levelNum = (nextLevel+1) * -1
+                } else {
+                    levelNum = levelNum-1
+                }
+            }
+        }
+
+        return clearOp
+    }
+    
+    func getScore() -> Int {
+        return score
+    }
+    func getCorrectChain() -> Int {
+        return correctChain
+    }
+    func getHighScore() -> Int {
+        return highScore
+    }
+    
+    func handleCorrectMatch() -> Bool {
+        var showGrowthSolution = false //returns if growth mindset solution message needs to be displayed
+        //update score and correct chains, reset incorrect chain
+        score = score+increaseScore
+        if score > highScore && levelType != challengeLevel {
+            highScore = score
+        } else if score > challengeModeHighScore && levelType == challengeLevel {
+            challengeModeHighScore = score
+        }
+        
+        correctChain = correctChain + 1
+        challengeCorrectChain = correctChain
+        
+        if correctChain > longestChain {
+            longestChain = correctChain
+        }
+        if incorrectAtTop > 2  && levelNum != challengeLevel {
+            showGrowthSolution = true
+        }
+        
+        incorrectChain = 0
+        incorrectAtTop = 0
+        correctTotal = correctTotal + 1
+        return showGrowthSolution
+    }
+    
+    
+    func addTimeBonus(seconds: Int) {
+        if seconds <= 10 {
+            score = score + (seconds*1000)
+        } else {
+            score = score + (seconds*10)
+        }
+        if score > highScore {
+            highScore = score
+        }
+    }
+    
+    func setUserID(newID: Int) {
+        userID = newID
+    }
+    
+    func updateProgress(completionTime: Int) {
+        var highestScore = 0
+        if levelType == challengeLevel {
+            highestScore = challengeModeHighScore
+        } else {
+            highestScore = highScore
+        }
+        let currentProgress = [userID, levelNum, difficulty, correctTotal, longestChain, score, highestScore, completionTime]
+        progress.append(currentProgress)
+    }
+    
+    func getProgressString() -> String {
+        let progressStr = "\(progress)"
+        return progressStr
+    }
+    
+    func regressLevel() {
+        //regress level for fixed mindset gameplay
+        //show message about regression
+        //force difficulty or level to revert
+        switch difficulty {
+        case 1:
+            if levelNum == -1 {
+                break
+            } else if levelNum == -2 {
+                levelNum = -1
+                difficulty = 3
+            } else if levelNum == -3 {
+                levelNum = -2
+                difficulty = 3
+            } else if levelNum == -4 {
+                levelNum = -3
+            }
+            difficulty = 3
+        case 2:
+            difficulty = 1
+        case 3:
+            difficulty = 2
+        default:
+            print("default regression")
+        }
+        //show regression message
+        //on hide regression method, start new challenge call
+    }
+    func resetLevel() {
+        score = 0
+        correctTotal = 0
+        correctChain = 0
+        incorrectTotal = 0
+        incorrectChain = 0
+        longestChain = 0
+    }
+    
+    func resetGame() {
+        score = 0
+        //highScore = 0
+        correctTotal = 0
+        correctChain = 0
+        longestChain = 0
+        incorrectTotal = 0
+        levelType = 0
+        loop = false
+    }
+    
+    func getIncorrectTotal() -> Int {
+        return incorrectTotal
+    }
+    
+    func updateIncorrect() {
+        incorrectTotal = incorrectTotal + 1
+        incorrectChain = incorrectChain + 1
+        if currentRowsFilled == 8 {
+            incorrectAtTop = incorrectAtTop + 1
+        }
+    }
+    
+    func getIncorrectChain() -> Int {
+        return incorrectChain
+    }
+    
+    func getCorrectTotal() -> Int {
+        return correctTotal
+    }
+    
+    func setLevelType(type: Int) {
+        levelType = type
+    }
+    
+    func getLevelType() -> Int {
+        return levelType
+    }
+    
+    func isLoop() -> Bool {
+        return loop
+    }
+    
+    func getChallengeHighScore() -> Int {
+        return challengeModeHighScore
+    }
 }
 

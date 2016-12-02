@@ -20,6 +20,7 @@ class GameScene: SKScene {
     
     let gameLayer = SKNode()
     let numberLayer = SKNode()
+    let pathLayer = SKNode()
     
     //variables to get square of number swiped from
     var swipeFromCol: Int?
@@ -40,6 +41,15 @@ class GameScene: SKScene {
     var startTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
     
     var swipeHandler: ((Array<Number>) -> ())?
+    
+    var pathStart = CGPoint()
+    var touchPoint = CGPoint()
+    var validPathStart: Bool = false
+    
+    var touchPoints = [CGPoint]()
+    
+    var fixedPathNodes = [SKShapeNode()]
+    var allPathNodes = [SKShapeNode()]
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder) is not used in this app")
@@ -64,6 +74,8 @@ class GameScene: SKScene {
             y: -TileHeight * CGFloat(NumRow) / 2)
         
         numberLayer.position = layerPos
+        pathLayer.position = layerPos
+        gameLayer.addChild(pathLayer)
         gameLayer.addChild(numberLayer)
     }
     
@@ -101,23 +113,43 @@ class GameScene: SKScene {
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        isTouchingBoard = false
+        pathLayer.removeAllChildren()
+        if fixedPathNodes.count > 0 {
+            fixedPathNodes.removeAll()
+        }
+        if allPathNodes.count > 0 {
+           allPathNodes.removeAll()
+        }
         
+        isTouchingBoard = false
+        validPathStart = false
         if let handler = swipeHandler {
             
             handler(numbersTouched)
         }
         
-        numbersTouched.removeAll() //clear array for next swipe movement
+        if numbersTouched.count > 0 {
+            numbersTouched.removeAll() //clear array for next swipe movement
+        }
+        
         hideSelectionIndicator()
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        
+
         //check for sprites along swipe direction
+        if allPathNodes.count > 0 {
+            for pathNode in allPathNodes {
+                pathNode.removeFromParent()
+            }
+            allPathNodes.removeAll()
+        }
+        
         for touch in touches {
             let location = touch.locationInNode(numberLayer)
             let(success, col, row) = convertPoint(location)
+            
+            touchPoints.append(location)
             
             //deselect sprites if swipe left
             let prevNum1 = numbersTouched.last
@@ -128,6 +160,12 @@ class GameScene: SKScene {
                 selectionSprite!.runAction(SKAction.sequence([SKAction.fadeOutWithDuration(0.3),SKAction.removeFromParent()]))
                 numbersTouched.removeLast()
                 selectionSpriteList.removeLast()
+                if fixedPathNodes.count >= 1 && validPathStart{
+                    fixedPathNodes.last?.removeFromParent()
+                    fixedPathNodes.removeLast()
+                    let num = numbersTouched.last
+                    pathStart = pointForColumn(num!.col, row: num!.row)
+                }
                 
             }
             
@@ -138,7 +176,7 @@ class GameScene: SKScene {
                 let prevNum = numbersTouched.last
                 let num = level.numAtCol(col, row: row)
                 
-                if col == 6 {
+                if col == 6 || col == 2 {
                     //allow up and down swipes within columns -- doesn't work, too easy to accidentally swipe on something else
                     if col == prevNum?.col && (row > prevNum?.row || row < prevNum?.row) {
                         //remove highlight from last number touched
@@ -148,18 +186,44 @@ class GameScene: SKScene {
                         numbersTouched.removeLast()
                         selectionSpriteList.removeLast()
                         
+                        fixedPathNodes.last?.removeFromParent()
+                        fixedPathNodes.removeLast()
+                        
+                        let prevNum = numbersTouched.last
+                        
                         numbersTouched.append(num!)
+                        if validPathStart {
+                            let loc = pointForColumn(num!.col, row: num!.row)
+                            pathStart = pointForColumn(prevNum!.col, row: prevNum!.row)
+                        
+                            drawPath(pathStart, end: loc, fixed: true)
+                            pathStart = loc
+                        }
                         showSelectionIndicatorForNumber(num!)
                     }
                 }
                 //add sprites if swiped right and on new number
                 if level.numAtCol(col, row: row) != prevNum && col > prevNum?.col {
-                    
+                    //create fixed path from previous number to new number
+                
                     numbersTouched.append(num!)
-                    showSelectionIndicatorForNumber(num!)
+                    let loc = pointForColumn(num!.col, row: num!.row)
+                    if validPathStart {
+                        drawPath(pathStart, end: loc, fixed: true)
+                        showSelectionIndicatorForNumber(num!)
+                    } else {
+                        showSelectionIndicatorForNumber(num!)
+                    }
+                    
                     
                 }
             }
+        }
+        
+        if numbersTouched.count < 4 && validPathStart{
+            touchPoint = touchPoints.last!
+            drawPath(pathStart, end: touchPoint, fixed: false)
+        
         }
     }
     
@@ -175,18 +239,53 @@ class GameScene: SKScene {
         let(success, col, row) = convertPoint(location)
         
         if success{
+            
+            
             //verify touch is on number, not empty square
             if level.containsNumber(col, row: row){
+                
+                
                 //record column and row where swipe started for comparison later
                 swipeFromCol = col
                 swipeFromRow = row
                 
                 //get the number at the location and add to list
                 let num = level.numAtCol(col, row: row)
+                if num!.col == 0 {
+                    validPathStart = true
+                    let loc = pointForColumn(num!.col, row: num!.row) //get start of path to draw
+                    pathStart = loc
+                } else {
+                    validPathStart = false
+                }
                 numbersTouched.append(num!)
                 showSelectionIndicatorForNumber(num!)
             }
         }
+        
+    }
+    
+    func drawPath(start: CGPoint, end: CGPoint, fixed: Bool){
+        if level.getCanDraw() {
+            let dPath = CGPathCreateMutable()
+            CGPathMoveToPoint(dPath, nil, start.x, start.y)
+            CGPathAddLineToPoint(dPath, nil, end.x, end.y)
+            
+            let dShape = SKShapeNode()
+            dShape.path = dPath
+            dShape.strokeColor = UIColor.yellowColor()
+            dShape.lineWidth = 5
+            //dShape.zPosition = 1
+            pathLayer.addChild(dShape)
+            //numberLayer.addChild(fixedShape)
+        if fixed {
+            fixedPathNodes.append(dShape)
+            pathStart = end
+        } else {
+            allPathNodes.append(dShape)
+        }
+        }
+        
     }
     
     
@@ -196,7 +295,7 @@ class GameScene: SKScene {
         
         
         if let sprite = num.sprite {
-            if num.numberType.rawValue <= 6{
+            if num.numberType.rawValue <= 6 && level.getCanDraw() == true {
                 let texture = SKTexture(imageNamed: num.highlightedSpriteName)
                 selectionSprite.size = texture.size()
                 selectionSprite.runAction(SKAction.setTexture(texture))
@@ -291,7 +390,22 @@ class GameScene: SKScene {
         runAction(SKAction.waitForDuration(1.2), completion: completion)
     }
     
-    func clearSprites() {
+    func setNumbersToClear() -> Int {
+        
+        var opCount = 0
+        if !numbersToClear.isEmpty {
+            //clear array except for operator sprites
+            var index = 0
+            for num in numbersToClear {
+                if num.numberType.rawValue < 3 {
+                    numbersToClear.removeAtIndex(index)
+                } else {
+                    opCount = opCount + 1
+                    index = index + 1
+                }
+            }
+        }
+        
         for row in 0..<10 {
             
             for col in 0..<7 {
@@ -304,44 +418,33 @@ class GameScene: SKScene {
                 
             }
         }
-        
+        return opCount
     }
     
     
-    func animateClearBoard(removeOperator:Bool) {
-        clearSprites()
-        var duration = 0.0
-        if removeOperator == true {
-            duration = 0.5
-        } else {
-            duration = 1.25
-        }
+    func animateClearBoard(removeOperator:Bool, completion: () -> ()) {
+        let numOpSprites = setNumbersToClear()
         
+        var duration = 0.0
+        
+        if removeOperator {
+            duration = 0.5
+        } else if !removeOperator && numbersToClear.count > numOpSprites {
+            duration = 1
+        }
+
         for num in numbersToClear {
-            if removeOperator {
+            if removeOperator || (!removeOperator && num.numberType.rawValue < 3) {
                 if let sprite = num.sprite {
                     if sprite.actionForKey("removing") == nil {
-                        let scaleAction = SKAction.scaleTo(0.1, duration: duration) //duration 1.5
+                        let scaleAction = SKAction.scaleTo(0.1, duration: duration)
                         scaleAction.timingMode = .EaseOut
                         sprite.runAction(SKAction.sequence([scaleAction, SKAction.removeFromParent()]), withKey:"removing")
                     }
                 }
             }
-            else {
-                
-                if num.numberType.rawValue < 3 {
-                    if let sprite = num.sprite {
-                        if sprite.actionForKey("removing") == nil {
-                            let scaleAction = SKAction.scaleTo(0.1, duration: duration) //duration 1.5
-                            scaleAction.timingMode = .EaseOut
-                            sprite.runAction(SKAction.sequence([scaleAction, SKAction.removeFromParent()]), withKey:"removing")
-                        }
-                    }
-                    
-                }
-                
-            }
         }
+        runAction(SKAction.waitForDuration(duration), completion: completion)
         level.clearBoard(numbersToClear, clearOperator: removeOperator)
     }
     
@@ -493,4 +596,5 @@ class GameScene: SKScene {
         return duration
         
     }
+    
 }

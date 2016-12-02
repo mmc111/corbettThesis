@@ -16,10 +16,10 @@
                         <viewControllerLayoutGuide type="bottom" id="95P-GX-fq2"/>
                     </layoutGuides>
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qJc-vJ-tG9" userLabel="messageImage">
+                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qJc-vJ-tG9" userLabel="messageImage">
                                 <constraints>
                                     <constraint firstAttribute="height" constant="278" id="Xw0-Ih-cHY"/>
                                 </constraints>
@@ -91,9 +91,9 @@ If you have any questions about the study, please contact the principle investig
                                     <action selector="agreeToPlayButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="7Ng-cS-DlQ"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="125" translatesAutoresizingMaskIntoConstraints="NO" id="PY8-zl-i76">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="PY8-zl-i76">
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="140" translatesAutoresizingMaskIntoConstraints="NO" id="CCH-UW-WIb">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="CCH-UW-WIb">
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Main Menu" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1fc-Nd-HiL">
                                                 <fontDescription key="fontDescription" name="GillSans-Bold" family="Gill Sans" pointSize="76"/>
@@ -110,6 +110,12 @@ If you have any questions about the study, please contact the principle investig
                                             </button>
                                         </subviews>
                                     </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aqJ-wz-VCV">
+                                        <state key="normal" image="challengeButton"/>
+                                        <connections>
+                                            <action selector="challengeButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="LUK-hZ-l4O"/>
+                                        </connections>
+                                    </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Lp4-PX-kEd">
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="23" translatesAutoresizingMaskIntoConstraints="NO" id="Hvg-z5-HdG">
@@ -186,6 +192,7 @@ If you have any questions about the study, please contact the principle investig
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gfs-Do-RJz"/>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pGQ-gu-PtM">
@@ -272,6 +279,34 @@ If you have any questions about the study, please contact the principle investig
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="rvc-EN-cA3">
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="qt5-IJ-ZVO">
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID: " textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTi-23-4Oi" userLabel="idDescr">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="30"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aui-rj-KbX" userLabel="idLabel">
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="30"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tnN-9r-Htm">
+                                <state key="normal" image="playAgainButton"/>
+                                <connections>
+                                    <action selector="playAgainButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="1GF-3u-PF4"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -279,16 +314,22 @@ If you have any questions about the study, please contact the principle investig
                             <constraint firstItem="GK0-3e-oN3" firstAttribute="top" secondItem="yHw-UX-JFb" secondAttribute="bottom" constant="8" id="4kb-no-kZh"/>
                             <constraint firstAttribute="bottom" secondItem="fwX-dh-Y6x" secondAttribute="bottom" constant="20" symbolic="YES" id="6wF-Yp-0JJ"/>
                             <constraint firstItem="fwX-dh-Y6x" firstAttribute="top" secondItem="rRV-M5-nBe" secondAttribute="bottom" constant="25" id="7bq-vr-hxp"/>
+                            <constraint firstItem="rvc-EN-cA3" firstAttribute="top" secondItem="qJc-vJ-tG9" secondAttribute="top" id="9e6-7v-irY"/>
+                            <constraint firstItem="rvc-EN-cA3" firstAttribute="centerX" secondItem="txx-hT-uax" secondAttribute="centerX" id="GOt-ht-uyq"/>
                             <constraint firstItem="qJc-vJ-tG9" firstAttribute="centerY" secondItem="3se-qz-xqx" secondAttribute="centerY" id="LDp-nc-vYl"/>
+                            <constraint firstItem="tnN-9r-Htm" firstAttribute="centerX" secondItem="fwX-dh-Y6x" secondAttribute="centerX" id="LYd-EI-xV0"/>
                             <constraint firstItem="rRV-M5-nBe" firstAttribute="trailing" secondItem="3se-qz-xqx" secondAttribute="trailingMargin" id="M80-dF-1Ue"/>
                             <constraint firstAttribute="trailing" secondItem="GK0-3e-oN3" secondAttribute="trailing" constant="20" id="WNK-Vf-jrf"/>
                             <constraint firstItem="qJc-vJ-tG9" firstAttribute="leading" secondItem="rRV-M5-nBe" secondAttribute="leading" id="XdT-nK-4co"/>
                             <constraint firstItem="GK0-3e-oN3" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leading" constant="20" id="Zrh-cC-hLv"/>
                             <constraint firstItem="rRV-M5-nBe" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leadingMargin" id="b4o-zq-aZV"/>
                             <constraint firstItem="qJc-vJ-tG9" firstAttribute="centerX" secondItem="fwX-dh-Y6x" secondAttribute="centerX" id="df1-94-ipU"/>
+                            <constraint firstItem="rvc-EN-cA3" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leadingMargin" constant="42" id="fVI-3b-VMl"/>
                             <constraint firstItem="PY8-zl-i76" firstAttribute="centerY" secondItem="3se-qz-xqx" secondAttribute="centerY" id="gAZ-0t-9uR"/>
                             <constraint firstItem="txx-hT-uax" firstAttribute="bottom" secondItem="qJc-vJ-tG9" secondAttribute="bottom" id="j0f-fU-g6z"/>
                             <constraint firstItem="txx-hT-uax" firstAttribute="leading" secondItem="qJc-vJ-tG9" secondAttribute="leading" id="mVk-4Y-36T"/>
+                            <constraint firstItem="PY8-zl-i76" firstAttribute="leading" secondItem="rvc-EN-cA3" secondAttribute="trailing" constant="37" id="mvr-PB-FXY"/>
+                            <constraint firstItem="tnN-9r-Htm" firstAttribute="bottom" secondItem="rRV-M5-nBe" secondAttribute="bottom" id="oPI-h8-bks"/>
                             <constraint firstItem="qJc-vJ-tG9" firstAttribute="trailing" secondItem="rRV-M5-nBe" secondAttribute="trailing" id="pLx-6O-Egl"/>
                             <constraint firstItem="rRV-M5-nBe" firstAttribute="top" secondItem="yHw-UX-JFb" secondAttribute="bottom" id="ww3-21-gfh"/>
                         </constraints>
@@ -297,6 +338,7 @@ If you have any questions about the study, please contact the principle investig
                         <outlet property="additionFocus" destination="rUg-Mr-NEr" id="hNs-Mt-wrr"/>
                         <outlet property="agreeToPlayButton" destination="fwX-dh-Y6x" id="E4e-Qh-DZw"/>
                         <outlet property="assentText" destination="rRV-M5-nBe" id="ulw-eA-xMK"/>
+                        <outlet property="challengeModeButton" destination="aqJ-wz-VCV" id="Zcp-FN-fRB"/>
                         <outlet property="completionTimeLabel" destination="cgO-Ce-uek" id="lPD-kT-5dr"/>
                         <outlet property="correctDescr" destination="tSr-7k-hnv" id="Ggj-bl-4sj"/>
                         <outlet property="correctLabel" destination="JEe-cH-CxB" id="Uqx-MN-uDc"/>
@@ -308,10 +350,14 @@ If you have any questions about the study, please contact the principle investig
                         <outlet property="focusLabel" destination="cwv-7F-OwC" id="iuM-ZP-rKO"/>
                         <outlet property="fullPlayThroughButton" destination="2Db-oK-0Xy" id="au0-1H-jDS"/>
                         <outlet property="highScoreLabel" destination="eBI-EB-rnB" id="Y4E-8x-4Uf"/>
+                        <outlet property="idDescr" destination="fTi-23-4Oi" id="2JG-Gx-QsZ"/>
+                        <outlet property="idLabel" destination="Aui-rj-KbX" id="Vhc-Ya-YRj"/>
                         <outlet property="mainMenuButton" destination="aEZ-qG-gQg" id="hYK-bh-1ul"/>
                         <outlet property="mainMenuLabel" destination="1fc-Nd-HiL" id="NNO-ZJ-JIv"/>
                         <outlet property="messageImage" destination="qJc-vJ-tG9" id="16k-uJ-yxT"/>
                         <outlet property="multFocus" destination="Z4Y-10-fSm" id="g7C-8A-1x1"/>
+                        <outlet property="playAgainButton" destination="tnN-9r-Htm" id="hp5-ZB-eBd"/>
+                        <outlet property="progressView" destination="gfs-Do-RJz" id="0wv-JI-jI2"/>
                         <outlet property="scoreDescr" destination="ge2-TM-tkv" id="8d8-IF-Up9"/>
                         <outlet property="scoreLabel" destination="6TO-TO-YFw" id="iF4-sg-hfO"/>
                         <outlet property="subFocus" destination="hbQ-AE-ddJ" id="2jx-iK-8xb"/>
@@ -327,9 +373,11 @@ If you have any questions about the study, please contact the principle investig
     <resources>
         <image name="addButton" width="189" height="47"/>
         <image name="button" width="202" height="68"/>
+        <image name="challengeButton" width="281" height="70"/>
         <image name="divButton" width="189" height="47"/>
         <image name="menuButton" width="149" height="47"/>
         <image name="multButton" width="189" height="47"/>
+        <image name="playAgainButton" width="190" height="82"/>
         <image name="playGameButton" width="383" height="98"/>
         <image name="subButton" width="189" height="47"/>
     </resources>
