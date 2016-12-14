@@ -175,8 +175,12 @@ class GameScene: SKScene {
                 //add this Number to the list if it is a different location, only add if it is a column greater than previous add (so can't swipe within columns)
                 let prevNum = numbersTouched.last
                 let num = level.numAtCol(col, row: row)
-                
-                if col == 6 || col == 2 {
+                if num!.col == 0 && validPathStart == false{
+                    //get that this is the start of a new path for drawing line purposes
+                    validPathStart = true
+                    let loc = pointForColumn(num!.col, row: num!.row) //get start of path to draw
+                    pathStart = loc
+                } else if col == 6 || col == 2 {
                     //allow up and down swipes within columns -- doesn't work, too easy to accidentally swipe on something else
                     if col == prevNum?.col && (row > prevNum?.row || row < prevNum?.row) {
                         //remove highlight from last number touched
@@ -390,21 +394,7 @@ class GameScene: SKScene {
         runAction(SKAction.waitForDuration(1.2), completion: completion)
     }
     
-    func setNumbersToClear() -> Int {
-        
-        var opCount = 0
-        if !numbersToClear.isEmpty {
-            //clear array except for operator sprites
-            var index = 0
-            for num in numbersToClear {
-                if num.numberType.rawValue < 3 {
-                    numbersToClear.removeAtIndex(index)
-                } else {
-                    opCount = opCount + 1
-                    index = index + 1
-                }
-            }
-        }
+    func setNumbersToClear() {
         
         for row in 0..<10 {
             
@@ -418,26 +408,44 @@ class GameScene: SKScene {
                 
             }
         }
-        return opCount
     }
     
     
-    func animateClearBoard(removeOperator:Bool, completion: () -> ()) {
-        let numOpSprites = setNumbersToClear()
-        
-        var duration = 0.0
-        
-        if removeOperator {
-            duration = 0.5
-        } else if !removeOperator && numbersToClear.count > numOpSprites {
-            duration = 1
+    
+    func animateClearBoard(completion: () -> ()) {
+        numbersToClear.removeAll()
+        setNumbersToClear()
+        level.clearBoard(true)
+        let duration = 0.5
+        for num in numbersToClear {
+            if let sprite = num.sprite {
+                if sprite.actionForKey("removing") == nil {
+                    let scaleAction = SKAction.scaleTo(0.01, duration: duration)
+                    scaleAction.timingMode = .EaseOut
+                    sprite.runAction(SKAction.sequence([scaleAction, SKAction.removeFromParent()]), withKey:"removing")
+                }
+            }
         }
+        runAction(SKAction.waitForDuration(duration), completion: completion)
+    }
+    /*func animateClearBoard(removeOperator:Bool, completion: () -> ()) {
+        print("remove operator: \(removeOperator)")
+        numbersToClear.removeAll()
+        setNumbersToClear()
+        
+        level.clearBoard(removeOperator)
+        
+        var duration = 0.5
 
         for num in numbersToClear {
             if removeOperator || (!removeOperator && num.numberType.rawValue < 3) {
                 if let sprite = num.sprite {
+                    if num.numberType.rawValue == 3 {
+                        sprite.removeAllChildren()
+                        print("removing all children")
+                    }
                     if sprite.actionForKey("removing") == nil {
-                        let scaleAction = SKAction.scaleTo(0.1, duration: duration)
+                        let scaleAction = SKAction.scaleTo(0.01, duration: duration)
                         scaleAction.timingMode = .EaseOut
                         sprite.runAction(SKAction.sequence([scaleAction, SKAction.removeFromParent()]), withKey:"removing")
                     }
@@ -445,8 +453,7 @@ class GameScene: SKScene {
             }
         }
         runAction(SKAction.waitForDuration(duration), completion: completion)
-        level.clearBoard(numbersToClear, clearOperator: removeOperator)
-    }
+    }*/
     
     func drawNumberChanges() {
         //perform check after the numbers have dropped down to ensure accuracy
@@ -538,7 +545,7 @@ class GameScene: SKScene {
                         y1 = newPosition.y
                         y2 = oldPosition.y
                     }
-                    let duration = NSTimeInterval(((y1 - y2) / TileHeight) * 0.1) * 4.5 ///*5 originally
+                    let duration = NSTimeInterval(((y1 - y2) / TileHeight) * 0.1) * 5 ///*5 originally
                     //calculate which has longest duration
                     longestDuration = max(longestDuration, duration + delay)
                     //perform animation (delay + movement)

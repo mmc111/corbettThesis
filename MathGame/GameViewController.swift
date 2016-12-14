@@ -23,31 +23,24 @@ class GameViewController: UIViewController {
     var timer = NSTimer()
     
     var needToShuffle = false
-    
-    var incorrectChainTotal = 0
-    
-    var clearOperator:Bool = false
+    //var clearOperator:Bool = false
     var currentlyDropping = false
-    
-    let maxRowsFilled = 8
-    
-    var dropSeconds = 10
-    let dropSecondsModifier = 1
+    var handlingSwipe: Bool = false
+    var challengeModeFirstPlay: Bool = false
+    var pauseDropTimer = false
     
     let fixedMindsetGameplay = false
     let growthMindsetGameplay = true
     
-    var handlingSwipe: Bool = false
+    let maxRowsFilled = 8
+    var dropSeconds = 10
+    let dropSecondsModifier = 1
     
     var userID = 1
-    
-    var challengeModeFirstPlay: Bool = false
     
     let fullLevel = 1
     let fixedLevel = 2
     let challengeLevel = 3
-    
-    var pauseDropTimer = false
     
     var tapGestureRecognizer: UITapGestureRecognizer!
     
@@ -146,13 +139,15 @@ class GameViewController: UIViewController {
             progressView.progress = 0.0
             seconds = 0
         } else {
+            
             progressView.progress = 100.0
         }
         
         handlingSwipe = false
         //clear board (if new level, operator(s) will be cleared from board)
-        self.scene.animateClearBoard(clearOperator) {
-            self.clearOperator = false
+        
+        //self.scene.animateClearBoard() {
+            //self.clearOperator = false
             
             self.showGamePlayElements()
         
@@ -167,18 +162,20 @@ class GameViewController: UIViewController {
                 self.challengeModeFirstPlay = false
             }
             self.scene.animateShuffle(self.level.shuffleBoard()){
+                
                 self.view.userInteractionEnabled = true
                 self.level.setCanDraw(true)
                 self.updateLabels()
                 self.pauseDropTimer = false
                 if self.level.getLevelType() == self.challengeLevel {
                     self.progressView.progressTintColor = UIColor .greenColor()
+                    self.messageImage.hidden = true
                 }
                 self.mainMenuButton.hidden = false
                 self.mainMenuButton.enabled = true
             }
             
-        }
+        //}
         
     }
     
@@ -274,7 +271,6 @@ class GameViewController: UIViewController {
             
             progressView.progressTintColor = UIColor .greenColor()
             
-            incorrectChainTotal = 0
             if level.getLevelType() != challengeLevel {
                 progressView.setProgress(progressView.progress+0.10, animated: true)
             } else {
@@ -289,7 +285,7 @@ class GameViewController: UIViewController {
         } else {
             progressView.progressTintColor = UIColor .redColor()
             if level.getLevelType() != challengeLevel {
-                progressView.setProgress(0.0, animated: true)
+              //  progressView.setProgress(0.0, animated: true)
             } else {
                 progressView.setProgress(progressView.progress-0.20, animated: true)
                 progressView.progressTintColor = UIColor .greenColor()
@@ -346,18 +342,29 @@ class GameViewController: UIViewController {
                     //check for level changes
 
                     if self.level.checkLevelChange() {
+                        //level or difficulty needs to change
                         self.dropSeconds = 10
                         //update and post? progress
                         self.level.updateProgress(self.seconds)
-                        self.clearOperator = self.level.changeLevel()
+                        //self.clearOperator = self.level.changeLevel()
+                        self.level.changeLevel()
                         if self.level.getLevelType() == self.challengeLevel {
+                            
                             self.level.addTimeBonus(self.seconds)
                             self.pauseDropTimer = true
-                            self.startNewChallenge()
+                            //display visual that level is complete
+                            self.messageImage.image = UIImage(named:"checkMark.png")
+                            self.messageImage.hidden = false
+                            self.scene.animateClearBoard {
+                                self.startNewChallenge()
+                            }
+                            
                         } else {
                             self.timer.invalidate()
                             self.completionTime = self.getTimeString(self.seconds)
-                            self.showMessagePanel()
+                            self.scene.animateClearBoard{
+                               self.showMessagePanel()
+                            }
                         }
                         self.level.addTimeBonus(self.seconds)
                     }
@@ -435,10 +442,6 @@ class GameViewController: UIViewController {
     
     func showBeginMessage(){
         level.setCanDraw(false)
-        /*score = 0
-        correct = 0
-        seconds = 0
-        correctChain = 0*/
         
         agreeToPlayButton.hidden = true
         
@@ -453,7 +456,6 @@ class GameViewController: UIViewController {
         
         //brief informational message only to be shown at the beginning of game play
         messageImage.image = UIImage(named:"startImage.png")
-        
         scene.userInteractionEnabled = true
         messageImage.hidden = false
         
@@ -468,7 +470,8 @@ class GameViewController: UIViewController {
         messageImage.hidden = true
         scene.userInteractionEnabled = true
         level.setCanDraw(true)
-        startNewChallenge()
+        self.startNewChallenge()
+        
     }
     
     func showMessagePanel() {
@@ -730,7 +733,7 @@ class GameViewController: UIViewController {
         else if level.getCurrentRowsFilled() > 0 {
             timer.invalidate()
             seconds = 0
-            scene.animateClearBoard(true) {
+            scene.animateClearBoard() {
                 self.showMainMenuFromButton()
             }
         } else {
@@ -768,7 +771,7 @@ class GameViewController: UIViewController {
         hideMessageElements()
         seconds = 0
         level.resetGame()
-        clearOperator = false
+        //clearOperator = false
         playAgainButton.hidden = true
         mainMenuButton.hidden = true
         level.setCanDraw(false)
@@ -781,7 +784,7 @@ class GameViewController: UIViewController {
         //create array with information including longest correct chain, post it
         level.updateProgress(seconds)
         postProgress()
-        self.scene.animateClearBoard(true) {
+        self.scene.animateClearBoard() {
             self.completionTime = self.getTimeString(self.seconds)
             self.getMessageForMessagePanel()
             self.showMessagePanel()
@@ -797,7 +800,7 @@ class GameViewController: UIViewController {
         request.HTTPMethod = "POST"
 
         let postString = level.getProgressString()
-        print(postString)
+        //print(postString)
         request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
         
         //let config = NSURLSessionConfiguration.defaultSessionConfiguration()
@@ -943,30 +946,5 @@ class GameViewController: UIViewController {
                 print("default showMessage")
             }
         }
-
     }
-    
-    /*func beginGame() {
-        
-        timerLabel.text = "0: 00"
-        
-        timerLabel.hidden = false
-        timerDescr.hidden = false
-        correctDescr.hidden = false
-        scoreDescr.hidden = false
-        correctLabel.hidden = false
-        scoreLabel.hidden = false
-        progressView.hidden = false
-        
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(GameViewController.addTime), userInfo: nil, repeats: true)
-        
-        updateLabels()
-        
-        let initEquations = level.firstFill()
-        self.level.shuffleBoard()
-        scene.addSpritesForNumbers(initEquations)
-        //mainMenuButton.hidden = false
-    }*/
- 
-    
 }

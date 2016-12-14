@@ -10,21 +10,16 @@
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="Equation_Mania_Beta" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="Equation_Mania" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="yHw-UX-JFb"/>
-                        <viewControllerLayoutGuide type="bottom" id="95P-GX-fq2"/>
+                        <viewControllerLayoutGuide type="top" id="8aa-yV-Osq"/>
+                        <viewControllerLayoutGuide type="bottom" id="qHh-Mt-9TT"/>
                     </layoutGuides>
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qJc-vJ-tG9" userLabel="messageImage">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="278" id="Xw0-Ih-cHY"/>
-                                </constraints>
-                            </imageView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rRV-M5-nBe" userLabel="assentText">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QLH-bX-4gQ" userLabel="assentText">
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" notEnabled="YES"/>
@@ -32,6 +27,7 @@
                                 <attributedString key="attributedText">
                                     <fragment content="Mobile Technology as an Aid in Elementary Math Education">
                                         <attributes>
+                                            <color key="NSColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <font key="NSFont" size="23" name="Georgia-Bold"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="12" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
@@ -41,12 +37,14 @@
 Cg
 </string>
                                         <attributes>
+                                            <color key="NSColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <font key="NSFont" size="11" name="Georgia"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="12" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content="Assent Form">
                                         <attributes>
+                                            <color key="NSColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <font key="NSFont" size="20" name="Georgia-Bold"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="12" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
@@ -56,19 +54,21 @@ Cg
 Cg
 </string>
                                         <attributes>
+                                            <color key="NSColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <font key="NSFont" size="11" name="Georgia"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="12" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <string key="content">You are being asked to be in a research study using a math education game developed for use on an iPad. A research study is a special way to find out about something. Your parent/guardian knows about the study, but you can decide if you want to be in it or not.
+                                        <mutableString key="content">You are being asked to be in a research study using a math education game developed for use on an iPad. A research study is a special way to find out about something. Your parent/guardian knows about the study, but you can decide if you want to be in it or not.
 If you decide to participate in the study, you will be asked to play the math game on an iPad. This will last as long as you would like to play the game. Instructions will be provided in the game on how to play. After you are done playing, you will be asked to complete a survey about whether you liked playing the game. Your responses on the survey will be recorded without your name. We will have no way of knowing how you as a student answered the survey questions.
 The risk in this study is not greater than that experienced in normal daily activities.
 The researcher hopes this study will help us understand how well touch-screen technology works for learning math.  The researcher also hopes to share any benefits that may happen with other researchers, so that other students can be helped as well. We also hope to learn something that will help other people someday.
 For this portion of the study, your responses will be used to help make the game better and more fun to play. When we are done with the entire study, we will write a report about what we found out.  Other people will not know if you are in my study.  I will put things I learn about you together with things I learn about other children, so no one can tell what things came from you.  When I tell other people about my research, I will not use your name, so no one can tell who I am talking about.
 If you want to stop, that’s OK and nobody will be angry or disappointed. You do not have to participate in this study and can quit the study at any time.
-If you have any questions about the study, please contact the principle investigator Justin Ehrlich at (316)461-4033 or JA-Ehrlich@wiu.edu.</string>
+If you have any questions about the study, please contact the principle investigator Justin Ehrlich at (316)461-4033 or JA-Ehrlich@wiu.edu.</mutableString>
                                         <attributes>
+                                            <color key="NSColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <font key="NSFont" size="18" name="Georgia"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="12" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
@@ -76,85 +76,131 @@ If you have any questions about the study, please contact the principle investig
                                 </attributedString>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fwX-dh-Y6x">
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="XTu-Jj-xZU"/>
-                                    <constraint firstAttribute="width" constant="204" id="v9I-tv-gAV"/>
-                                </constraints>
-                                <color key="tintColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" image="button">
-                                    <color key="titleColor" red="0.28716956344993649" green="1" blue="0.19741267617388825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="titleShadowColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="agreeToPlayButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="7Ng-cS-DlQ"/>
-                                </connections>
-                            </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="PY8-zl-i76">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="WeC-ag-L6E">
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="CCH-UW-WIb">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f9H-yT-kNi"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="JMP-7y-FDU" userLabel="ID Stack">
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Main Menu" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1fc-Nd-HiL">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0tL-az-lfi">
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xl6-Sd-rfa">
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="YJk-CT-bis" userLabel="Score Stack">
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w7c-2H-PRO">
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3w-2c-FrV">
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Pav-up-SA7" userLabel="HScore Stack">
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="High Score: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sXo-23-F30">
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AZb-55-m1Q">
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="7cf-16-zbo" userLabel="Time Stack">
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2wP-7Y-3Jf">
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mnb-9H-roQ">
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="aIA-Uf-BlA" userLabel="Main Menu">
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="6Y4-Y7-wNX">
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Main Menu" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cQ0-8g-IJb">
                                                 <fontDescription key="fontDescription" name="GillSans-Bold" family="Gill Sans" pointSize="76"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Db-oK-0Xy">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hLe-KD-tYi">
                                                 <state key="normal" image="playGameButton">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="fullButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="EsT-OD-Qx2"/>
+                                                    <action selector="fullButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="G9o-Ap-2F9"/>
                                                 </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aqJ-wz-VCV">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sa7-i1-NhJ">
                                         <state key="normal" image="challengeButton"/>
                                         <connections>
-                                            <action selector="challengeButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="LUK-hZ-l4O"/>
+                                            <action selector="challengeButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="dNZ-qh-v2H"/>
                                         </connections>
                                     </button>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Lp4-PX-kEd">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="wLx-P0-u4F">
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="23" translatesAutoresizingMaskIntoConstraints="NO" id="Hvg-z5-HdG">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="23" translatesAutoresizingMaskIntoConstraints="NO" id="dNC-Q2-wna">
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Focus Levels:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cwv-7F-OwC">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Focus Levels:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rs2-Y7-ZaJ">
                                                         <fontDescription key="fontDescription" name="GillSans-Bold" family="Gill Sans" pointSize="30"/>
                                                         <color key="textColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rUg-Mr-NEr">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QOZ-mu-d5e">
                                                         <state key="normal" image="addButton">
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                         <connections>
-                                                            <action selector="addButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="tW3-0D-b5A"/>
+                                                            <action selector="addButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="K6d-MP-lIZ"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hbQ-AE-ddJ">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZSK-X6-win">
                                                         <state key="normal" image="subButton">
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                         <connections>
-                                                            <action selector="subButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="6dC-Xn-C7R"/>
+                                                            <action selector="subButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="K9p-sM-Exv"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z4Y-10-fSm">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dtG-Qz-HCv">
                                                         <state key="normal" image="multButton">
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                         <connections>
-                                                            <action selector="multButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="AjQ-vY-Jv9"/>
+                                                            <action selector="multButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="5A0-rE-KFZ"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eHL-aY-6PH">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ygz-Gq-gOC">
                                                         <state key="normal" image="divButton">
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                         <connections>
-                                                            <action selector="divButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="Ekt-Gf-1tD"/>
+                                                            <action selector="divButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="52g-qr-b6B"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -163,211 +209,133 @@ If you have any questions about the study, please contact the principle investig
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="GK0-3e-oN3">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I7f-xI-4ko" userLabel="PlayAgain">
+                                <state key="normal" image="playAgainButton"/>
+                                <connections>
+                                    <action selector="playAgainButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="TYw-8m-L5F"/>
+                                </connections>
+                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="hbv-H0-hLt">
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="T4a-wq-cDJ">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3sl-5F-eQ7">
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ge2-TM-tkv">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oRK-uy-bzg">
                                                 <fontDescription key="fontDescription" name="GillSans-Bold" family="Gill Sans" pointSize="37"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6TO-TO-YFw" userLabel="Score Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ate-13-V9s" userLabel="Score Label">
                                                 <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="34"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.33333333329999998" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="YqL-mO-ZtB">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="F8U-75-Qm4">
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Correct: " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tSr-7k-hnv">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Correct: " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RYz-14-APT">
                                                 <fontDescription key="fontDescription" name="GillSans-Bold" family="Gill Sans" pointSize="37"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JEe-cH-CxB">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Xl-wb-ySH">
                                                 <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="34"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gfs-Do-RJz"/>
+                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="qIQ-jH-aMA"/>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pGQ-gu-PtM">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="NcC-ni-Lhq">
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zP6-Pa-X9a" userLabel="Time: ">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Spn-gZ-N44" userLabel="Time: ">
                                                 <fontDescription key="fontDescription" name="GillSans-Bold" family="Gill Sans" pointSize="37"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MXg-I3-yro">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="md7-Ie-abn">
                                                 <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="34"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="9be-1M-rKA">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="7lk-RC-K0g">
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEZ-qG-gQg">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Im-rY-5AZ">
                                                 <state key="normal" image="menuButton">
                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="mainMenuButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="z1f-6g-mK9"/>
+                                                    <action selector="mainMenuButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="5Vu-Ja-HAR"/>
                                                 </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="txx-hT-uax">
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Gpk-9v-R3n">
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: " textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DIz-4V-XRI" userLabel="displayScoreDescr">
-                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                                <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S7o-v8-hB1" userLabel="displayScore Label">
-                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                                <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="17"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="1Gu-PE-Q7O">
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="High Score: " textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eBI-EB-rnB" userLabel="highScore">
-                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                                <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="17"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B6H-fJ-TwB" userLabel="displayHighScore">
-                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                                <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="17"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="79i-tC-p2m">
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time: " textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgO-Ce-uek" userLabel="completionTime">
-                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                                <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="17"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcY-i6-EtO" userLabel="displayCompletionTime">
-                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                                <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="17"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </stackView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="rvc-EN-cA3">
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="qt5-IJ-ZVO">
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ID: " textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTi-23-4Oi" userLabel="idDescr">
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="30"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aui-rj-KbX" userLabel="idLabel">
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="30"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </stackView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tnN-9r-Htm">
-                                <state key="normal" image="playAgainButton"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yJx-Tp-tb2" userLabel="agreeToPlayButton">
+                                <state key="normal" image="button"/>
                                 <connections>
-                                    <action selector="playAgainButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="1GF-3u-PF4"/>
+                                    <action selector="agreeToPlayButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="tBx-Ij-5Ab"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="PY8-zl-i76" firstAttribute="centerX" secondItem="3se-qz-xqx" secondAttribute="centerX" id="1X0-Ws-Stj"/>
-                            <constraint firstItem="GK0-3e-oN3" firstAttribute="top" secondItem="yHw-UX-JFb" secondAttribute="bottom" constant="8" id="4kb-no-kZh"/>
-                            <constraint firstAttribute="bottom" secondItem="fwX-dh-Y6x" secondAttribute="bottom" constant="20" symbolic="YES" id="6wF-Yp-0JJ"/>
-                            <constraint firstItem="fwX-dh-Y6x" firstAttribute="top" secondItem="rRV-M5-nBe" secondAttribute="bottom" constant="25" id="7bq-vr-hxp"/>
-                            <constraint firstItem="rvc-EN-cA3" firstAttribute="top" secondItem="qJc-vJ-tG9" secondAttribute="top" id="9e6-7v-irY"/>
-                            <constraint firstItem="rvc-EN-cA3" firstAttribute="centerX" secondItem="txx-hT-uax" secondAttribute="centerX" id="GOt-ht-uyq"/>
-                            <constraint firstItem="qJc-vJ-tG9" firstAttribute="centerY" secondItem="3se-qz-xqx" secondAttribute="centerY" id="LDp-nc-vYl"/>
-                            <constraint firstItem="tnN-9r-Htm" firstAttribute="centerX" secondItem="fwX-dh-Y6x" secondAttribute="centerX" id="LYd-EI-xV0"/>
-                            <constraint firstItem="rRV-M5-nBe" firstAttribute="trailing" secondItem="3se-qz-xqx" secondAttribute="trailingMargin" id="M80-dF-1Ue"/>
-                            <constraint firstAttribute="trailing" secondItem="GK0-3e-oN3" secondAttribute="trailing" constant="20" id="WNK-Vf-jrf"/>
-                            <constraint firstItem="qJc-vJ-tG9" firstAttribute="leading" secondItem="rRV-M5-nBe" secondAttribute="leading" id="XdT-nK-4co"/>
-                            <constraint firstItem="GK0-3e-oN3" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leading" constant="20" id="Zrh-cC-hLv"/>
-                            <constraint firstItem="rRV-M5-nBe" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leadingMargin" id="b4o-zq-aZV"/>
-                            <constraint firstItem="qJc-vJ-tG9" firstAttribute="centerX" secondItem="fwX-dh-Y6x" secondAttribute="centerX" id="df1-94-ipU"/>
-                            <constraint firstItem="rvc-EN-cA3" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leadingMargin" constant="42" id="fVI-3b-VMl"/>
-                            <constraint firstItem="PY8-zl-i76" firstAttribute="centerY" secondItem="3se-qz-xqx" secondAttribute="centerY" id="gAZ-0t-9uR"/>
-                            <constraint firstItem="txx-hT-uax" firstAttribute="bottom" secondItem="qJc-vJ-tG9" secondAttribute="bottom" id="j0f-fU-g6z"/>
-                            <constraint firstItem="txx-hT-uax" firstAttribute="leading" secondItem="qJc-vJ-tG9" secondAttribute="leading" id="mVk-4Y-36T"/>
-                            <constraint firstItem="PY8-zl-i76" firstAttribute="leading" secondItem="rvc-EN-cA3" secondAttribute="trailing" constant="37" id="mvr-PB-FXY"/>
-                            <constraint firstItem="tnN-9r-Htm" firstAttribute="bottom" secondItem="rRV-M5-nBe" secondAttribute="bottom" id="oPI-h8-bks"/>
-                            <constraint firstItem="qJc-vJ-tG9" firstAttribute="trailing" secondItem="rRV-M5-nBe" secondAttribute="trailing" id="pLx-6O-Egl"/>
-                            <constraint firstItem="rRV-M5-nBe" firstAttribute="top" secondItem="yHw-UX-JFb" secondAttribute="bottom" id="ww3-21-gfh"/>
+                            <constraint firstItem="aIA-Uf-BlA" firstAttribute="centerX" secondItem="WeC-ag-L6E" secondAttribute="centerX" constant="1.5" id="3a9-NN-9AT"/>
+                            <constraint firstItem="WeC-ag-L6E" firstAttribute="top" secondItem="3se-qz-xqx" secondAttribute="top" constant="373" id="3gZ-zG-StX"/>
+                            <constraint firstItem="QLH-bX-4gQ" firstAttribute="trailing" secondItem="WeC-ag-L6E" secondAttribute="trailing" id="48g-K8-9Qi"/>
+                            <constraint firstAttribute="bottom" secondItem="WeC-ag-L6E" secondAttribute="bottom" constant="229" id="5zK-Jp-RJh"/>
+                            <constraint firstItem="QLH-bX-4gQ" firstAttribute="trailing" secondItem="3se-qz-xqx" secondAttribute="trailingMargin" id="AAi-oz-Lly"/>
+                            <constraint firstItem="QLH-bX-4gQ" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leadingMargin" id="ADa-xA-vy9"/>
+                            <constraint firstItem="I7f-xI-4ko" firstAttribute="centerX" secondItem="yJx-Tp-tb2" secondAttribute="centerX" id="FR7-tE-0OX"/>
+                            <constraint firstItem="QLH-bX-4gQ" firstAttribute="top" secondItem="8aa-yV-Osq" secondAttribute="bottom" id="LMQ-xE-kDo"/>
+                            <constraint firstItem="QLH-bX-4gQ" firstAttribute="leading" secondItem="WeC-ag-L6E" secondAttribute="leading" id="M3l-yT-wtb"/>
+                            <constraint firstItem="QLH-bX-4gQ" firstAttribute="bottom" secondItem="yJx-Tp-tb2" secondAttribute="bottom" id="R7d-vz-do6"/>
+                            <constraint firstItem="I7f-xI-4ko" firstAttribute="centerX" secondItem="WeC-ag-L6E" secondAttribute="centerX" id="ZCe-UA-s7X"/>
+                            <constraint firstItem="QLH-bX-4gQ" firstAttribute="centerX" secondItem="hbv-H0-hLt" secondAttribute="centerX" id="a30-qx-rbm"/>
+                            <constraint firstItem="yJx-Tp-tb2" firstAttribute="top" secondItem="I7f-xI-4ko" secondAttribute="bottom" id="fMN-iO-mgO"/>
+                            <constraint firstAttribute="bottom" secondItem="yJx-Tp-tb2" secondAttribute="bottom" constant="20" symbolic="YES" id="hQr-OI-22u"/>
+                            <constraint firstItem="hbv-H0-hLt" firstAttribute="top" secondItem="8aa-yV-Osq" secondAttribute="bottom" constant="8" symbolic="YES" id="n3u-Qm-tcP"/>
+                            <constraint firstItem="I7f-xI-4ko" firstAttribute="top" secondItem="aIA-Uf-BlA" secondAttribute="bottom" constant="8" symbolic="YES" id="qms-AM-aeY"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="additionFocus" destination="rUg-Mr-NEr" id="hNs-Mt-wrr"/>
-                        <outlet property="agreeToPlayButton" destination="fwX-dh-Y6x" id="E4e-Qh-DZw"/>
-                        <outlet property="assentText" destination="rRV-M5-nBe" id="ulw-eA-xMK"/>
-                        <outlet property="challengeModeButton" destination="aqJ-wz-VCV" id="Zcp-FN-fRB"/>
-                        <outlet property="completionTimeLabel" destination="cgO-Ce-uek" id="lPD-kT-5dr"/>
-                        <outlet property="correctDescr" destination="tSr-7k-hnv" id="Ggj-bl-4sj"/>
-                        <outlet property="correctLabel" destination="JEe-cH-CxB" id="Uqx-MN-uDc"/>
-                        <outlet property="displayCompletionTime" destination="hcY-i6-EtO" id="xni-rE-y7n"/>
-                        <outlet property="displayHighScore" destination="B6H-fJ-TwB" id="P4b-eB-Qm5"/>
-                        <outlet property="displayScoreDescr" destination="DIz-4V-XRI" id="O5z-d2-Tg4"/>
-                        <outlet property="displayScoreLabel" destination="S7o-v8-hB1" id="stA-Sd-v1l"/>
-                        <outlet property="divFocus" destination="eHL-aY-6PH" id="OsF-n6-H0f"/>
-                        <outlet property="focusLabel" destination="cwv-7F-OwC" id="iuM-ZP-rKO"/>
-                        <outlet property="fullPlayThroughButton" destination="2Db-oK-0Xy" id="au0-1H-jDS"/>
-                        <outlet property="highScoreLabel" destination="eBI-EB-rnB" id="Y4E-8x-4Uf"/>
-                        <outlet property="idDescr" destination="fTi-23-4Oi" id="2JG-Gx-QsZ"/>
-                        <outlet property="idLabel" destination="Aui-rj-KbX" id="Vhc-Ya-YRj"/>
-                        <outlet property="mainMenuButton" destination="aEZ-qG-gQg" id="hYK-bh-1ul"/>
-                        <outlet property="mainMenuLabel" destination="1fc-Nd-HiL" id="NNO-ZJ-JIv"/>
-                        <outlet property="messageImage" destination="qJc-vJ-tG9" id="16k-uJ-yxT"/>
-                        <outlet property="multFocus" destination="Z4Y-10-fSm" id="g7C-8A-1x1"/>
-                        <outlet property="playAgainButton" destination="tnN-9r-Htm" id="hp5-ZB-eBd"/>
-                        <outlet property="progressView" destination="gfs-Do-RJz" id="0wv-JI-jI2"/>
-                        <outlet property="scoreDescr" destination="ge2-TM-tkv" id="8d8-IF-Up9"/>
-                        <outlet property="scoreLabel" destination="6TO-TO-YFw" id="iF4-sg-hfO"/>
-                        <outlet property="subFocus" destination="hbQ-AE-ddJ" id="2jx-iK-8xb"/>
-                        <outlet property="timerDescr" destination="zP6-Pa-X9a" id="zYT-RP-HbH"/>
-                        <outlet property="timerLabel" destination="MXg-I3-yro" id="2NE-rt-FIj"/>
+                        <outlet property="additionFocus" destination="QOZ-mu-d5e" id="Rbz-CN-DUc"/>
+                        <outlet property="agreeToPlayButton" destination="yJx-Tp-tb2" id="ZbU-Kr-UFi"/>
+                        <outlet property="assentText" destination="QLH-bX-4gQ" id="9qk-Fm-tb0"/>
+                        <outlet property="challengeModeButton" destination="Sa7-i1-NhJ" id="f2b-gt-HjA"/>
+                        <outlet property="completionTimeLabel" destination="2wP-7Y-3Jf" id="fBx-2R-HCN"/>
+                        <outlet property="correctDescr" destination="RYz-14-APT" id="RFY-s1-Tf9"/>
+                        <outlet property="correctLabel" destination="0Xl-wb-ySH" id="0R5-08-WTM"/>
+                        <outlet property="displayCompletionTime" destination="mnb-9H-roQ" id="sOK-hR-FLq"/>
+                        <outlet property="displayHighScore" destination="AZb-55-m1Q" id="YcI-eB-BRQ"/>
+                        <outlet property="displayScoreDescr" destination="w7c-2H-PRO" id="uB3-MQ-fsL"/>
+                        <outlet property="displayScoreLabel" destination="K3w-2c-FrV" id="q21-fk-8Cd"/>
+                        <outlet property="divFocus" destination="ygz-Gq-gOC" id="QhU-cu-Od4"/>
+                        <outlet property="focusLabel" destination="rs2-Y7-ZaJ" id="xpa-hd-Jqg"/>
+                        <outlet property="fullPlayThroughButton" destination="hLe-KD-tYi" id="HlF-nX-F1g"/>
+                        <outlet property="highScoreLabel" destination="sXo-23-F30" id="jv1-gK-yMz"/>
+                        <outlet property="idDescr" destination="0tL-az-lfi" id="iWq-0u-t3X"/>
+                        <outlet property="idLabel" destination="xl6-Sd-rfa" id="Rch-ih-8pS"/>
+                        <outlet property="mainMenuButton" destination="8Im-rY-5AZ" id="4MH-FJ-9KU"/>
+                        <outlet property="mainMenuLabel" destination="cQ0-8g-IJb" id="uJc-JJ-whw"/>
+                        <outlet property="messageImage" destination="f9H-yT-kNi" id="Mgc-UC-70W"/>
+                        <outlet property="multFocus" destination="dtG-Qz-HCv" id="OH0-GI-d4J"/>
+                        <outlet property="playAgainButton" destination="I7f-xI-4ko" id="XcI-n4-63S"/>
+                        <outlet property="progressView" destination="qIQ-jH-aMA" id="gmY-31-lA5"/>
+                        <outlet property="scoreDescr" destination="oRK-uy-bzg" id="i4f-X8-pLb"/>
+                        <outlet property="scoreLabel" destination="ate-13-V9s" id="pWc-NK-r89"/>
+                        <outlet property="subFocus" destination="ZSK-X6-win" id="mib-85-eyp"/>
+                        <outlet property="timerDescr" destination="Spn-gZ-N44" id="5LH-rI-Hpq"/>
+                        <outlet property="timerLabel" destination="md7-Ie-abn" id="d88-V5-4CP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8391" y="-4481"/>
+            <point key="canvasLocation" x="137.5" y="112.49999999999999"/>
         </scene>
     </scenes>
     <resources>

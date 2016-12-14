@@ -369,8 +369,8 @@ class Level {
         return newSet
     }
     
-    func clearBoard (numbersToRemove: [Number], clearOperator: Bool) {
-        for num in numbersToRemove {
+    func clearBoard (clearOperator: Bool) {
+        /*for num in numbersToRemove {
             if clearOperator {
                 numbers[num.col, num.row] = nil
             }
@@ -379,7 +379,26 @@ class Level {
                     numbers[num.col, num.row] = nil
                 }
             }
+        }*/
+        
+        for col in 0..<NumCol {
+            for row in 0..<currentRowsFilled {
+                if col == 0 || col == 4 || col == 6  {
+                    if numbers[col,row] != nil {
+                        if numbers[col,row]!.numberType.rawValue < 3 {
+                            numbers[col,row] = nil
+                        }
+                    }
+                }
+            }
         }
+        
+        if clearOperator {
+            for row in 0..<NumRow {
+                numbers[2,row] = nil
+            }
+        }
+        
         
         currentRowsFilled = 0
     }
