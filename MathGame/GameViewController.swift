@@ -285,7 +285,7 @@ class GameViewController: UIViewController {
         } else {
             progressView.progressTintColor = UIColor .redColor()
             if level.getLevelType() != challengeLevel {
-              //  progressView.setProgress(0.0, animated: true)
+                progressView.setProgress(0.0, animated: true)
             } else {
                 progressView.setProgress(progressView.progress-0.20, animated: true)
                 progressView.progressTintColor = UIColor .greenColor()
