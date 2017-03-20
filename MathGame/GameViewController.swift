@@ -28,6 +28,7 @@ class GameViewController: UIViewController {
     var handlingSwipe: Bool = false
     var challengeModeFirstPlay: Bool = false
     var pauseDropTimer = false
+    var menuButtonPressed = false
     
     let fixedMindsetGameplay = false
     let growthMindsetGameplay = true
@@ -37,6 +38,7 @@ class GameViewController: UIViewController {
     let dropSecondsModifier = 1
     
     var userID = 1
+    var grade = 0
     
     let fullLevel = 1
     let fixedLevel = 2
@@ -133,6 +135,8 @@ class GameViewController: UIViewController {
     //function to reset/update board after gameplay has begun, call in viewDidLoad()
     func startNewChallenge() {
         
+        self.dropSeconds = 10
+        
         if level.getLevelType() != challengeLevel {
             level.resetLevel()
             completionTime = ""
@@ -140,14 +144,12 @@ class GameViewController: UIViewController {
             seconds = 0
         } else {
             
-            progressView.progress = 100.0
+            progressView.progress = 100.0 ////CHECK THIS!!!!!!!!!!!!!!!!!!!
         }
         
         handlingSwipe = false
         //clear board (if new level, operator(s) will be cleared from board)
-        
-        //self.scene.animateClearBoard() {
-            //self.clearOperator = false
+
             
             self.showGamePlayElements()
         
@@ -161,6 +163,7 @@ class GameViewController: UIViewController {
                 self.updateLabels()
                 self.challengeModeFirstPlay = false
             }
+
             self.scene.animateShuffle(self.level.shuffleBoard()){
                 
                 self.view.userInteractionEnabled = true
@@ -189,9 +192,7 @@ class GameViewController: UIViewController {
         
         //can impose time limit here
         //base drop seconds on how full board is, drop less often if board is full
-        
-        if(seconds%dropSeconds == 0 && seconds > 0 && level.getCurrentRowsFilled() < maxRowsFilled && !handlingSwipe && !scene.getTouchingBoard()) && !pauseDropTimer { //this line makes it so that new rows are dropped only!! when the user is not touching
-        
+        if(seconds%dropSeconds == 0 && seconds > 0 && level.getCurrentRowsFilled() < maxRowsFilled && !handlingSwipe && !scene.getTouchingBoard()) && !pauseDropTimer && !menuButtonPressed{ //this line makes it so that new rows are dropped only!! when the user is not touching
         //if(seconds%dropSeconds == 0 && seconds > 0 && level.getCurrentRowsFilled() < maxRowsFilled && !handlingSwipe) {
             currentlyDropping = true
             view.userInteractionEnabled = false
@@ -271,13 +272,13 @@ class GameViewController: UIViewController {
             
             progressView.progressTintColor = UIColor .greenColor()
             
-            if level.getLevelType() != challengeLevel {
+            if level.getLevelType() != challengeLevel && progressView.progress < 100.0 {
                 progressView.setProgress(progressView.progress+0.10, animated: true)
-            } else {
+            } /*else {
                 if progressView.progress < 100.0 {
                     progressView.setProgress(100.0, animated: true)
                 }
-            }
+            }*/
             scene.showCorrectIndicator(number)
             //let delay = 0.05
             let delay = 1.2
@@ -287,8 +288,10 @@ class GameViewController: UIViewController {
             if level.getLevelType() != challengeLevel {
                 progressView.setProgress(0.0, animated: true)
             } else {
-                progressView.setProgress(progressView.progress-0.20, animated: true)
-                progressView.progressTintColor = UIColor .greenColor()
+                if progressView.progress > 0.0 {
+                    progressView.setProgress(progressView.progress-0.20, animated: true)
+                    progressView.progressTintColor = UIColor .greenColor()
+                }
             }
             
             scene.showIncorrectIndicator(number)
@@ -345,8 +348,9 @@ class GameViewController: UIViewController {
                         //level or difficulty needs to change
                         self.dropSeconds = 10
                         //update and post? progress
-                        self.level.updateProgress(self.seconds)
+                        self.level.updateProgress(self.seconds,grade: self.grade)
                         //self.clearOperator = self.level.changeLevel()
+                        
                         self.level.changeLevel()
                         if self.level.getLevelType() == self.challengeLevel {
                             
@@ -354,7 +358,11 @@ class GameViewController: UIViewController {
                             self.pauseDropTimer = true
                             //display visual that level is complete
                             self.messageImage.image = UIImage(named:"checkMark.png")
+                            self.messageImage.alpha = 1.0
                             self.messageImage.hidden = false
+                            UIView.animateWithDuration(0.5, delay: 0.5, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+                                self.messageImage.alpha = 0.0
+                                }, completion: nil)
                             self.scene.animateClearBoard {
                                 self.startNewChallenge()
                             }
@@ -367,30 +375,31 @@ class GameViewController: UIViewController {
                             }
                         }
                         self.level.addTimeBonus(self.seconds)
-                    }
-                    
-                    let invalidResults = self.level.invalidNumbers()
-                    
-                    if invalidResults {
-                        self.scene.drawNumberChanges()
-                    }
-                    
-                    //check if need to show growth solution
-                    if showGrowth {
-                        self.showGrowthSolution()
-                        self.needToShuffle = true
-                    } else if self.level.getCurrentRowsFilled() > 1 { //always shuffle to hide new valid results as long as there is at least two rows
-                        let columns = self.level.shuffleBoard()
-                        self.scene.animateShuffle(columns) {
-                            self.needToShuffle = false
-                            self.handlingSwipe = false
-                            self.view.userInteractionEnabled = true
-                     
-                        }
-                     } else {
-                    
                         self.handlingSwipe = false
                         self.view.userInteractionEnabled = true
+                    } else { //level does not need to change, check all other factors
+                        let invalidResults = self.level.invalidNumbers()
+                        
+                        if invalidResults {
+                            self.scene.drawNumberChanges()
+                        }
+                        
+                        //check if need to show growth solution
+                        if showGrowth {
+                            self.showGrowthSolution()
+                            self.needToShuffle = true
+                        } else if self.level.getCurrentRowsFilled() > 1 { //always shuffle to hide new valid results as long as there is at least two rows
+                            let columns = self.level.shuffleBoard()
+                            self.scene.animateShuffle(columns) {
+                                self.needToShuffle = false
+                                self.handlingSwipe = false
+                                self.view.userInteractionEnabled = true
+                            }
+                        } else {
+                            
+                            self.handlingSwipe = false
+                            self.view.userInteractionEnabled = true
+                        }
                     }
                 }
             }
@@ -544,7 +553,7 @@ class GameViewController: UIViewController {
         view.removeGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer = nil
         messageImage.hidden = true
-        if self.level.getCurrentRowsFilled() > 1 && needToShuffle == true { //always shuffle to hide new valid results
+        /*if self.level.getCurrentRowsFilled() > 1 && needToShuffle == true { //always shuffle to hide new valid results
             let columns = self.level.shuffleBoard()
             self.scene.animateShuffle(columns) {
                 self.needToShuffle = false
@@ -556,7 +565,7 @@ class GameViewController: UIViewController {
                 self.scene.userInteractionEnabled = true
                 
             }
-        } else {
+        } else {*/
             self.needToShuffle = false
             mainMenuButton.enabled = true
             view.userInteractionEnabled = true
@@ -564,7 +573,7 @@ class GameViewController: UIViewController {
             handlingSwipe = false
             
             scene.userInteractionEnabled = true
-        }
+        //}
         
     }
     
@@ -588,6 +597,8 @@ class GameViewController: UIViewController {
         scene.userInteractionEnabled = true
         
         level.setCanDraw(false)
+        
+        menuButtonPressed = false
     }
     
     
@@ -714,7 +725,8 @@ class GameViewController: UIViewController {
         startNewChallenge()
     }
     @IBAction func mainMenuButtonPressed(_: AnyObject) {
-        level.updateProgress(seconds)
+        menuButtonPressed = true
+        level.updateProgress(seconds, grade: grade)
         postProgress()
         dropSeconds = 10
 
@@ -723,14 +735,7 @@ class GameViewController: UIViewController {
         
         //if there's anything on the board, clear it
         //disable menu button if there's an image currently showing
-
-        if seconds%dropSeconds == 0 || currentlyDropping == true {
-            timer.invalidate()
-            seconds = 0
-            let delay = 1.0
-            NSTimer.scheduledTimerWithTimeInterval(delay, target: self, selector: #selector(GameViewController.clearBoard), userInfo: nil, repeats: false)
-        }
-        else if level.getCurrentRowsFilled() > 0 {
+        if level.getCurrentRowsFilled() > 0 {
             timer.invalidate()
             seconds = 0
             scene.animateClearBoard() {
@@ -754,16 +759,6 @@ class GameViewController: UIViewController {
         showMainMenu()
     }
     
-    func clearBoard() {
-        //if new row has dropped after delay, make sure its done dropping then continue
-        if level.getCurrentRowsFilled() > 0 {
-            let delay2 = 0.75
-            NSTimer.scheduledTimerWithTimeInterval(delay2, target: self, selector: #selector(GameViewController.showMainMenuFromButton), userInfo: nil, repeats: false)
-        } else {
-            showMainMenuFromButton()
-        }
-    }
-    
     func showMainMenuFromButton() {
         //update and post progress
         level.setDifficulty(1)
@@ -782,7 +777,7 @@ class GameViewController: UIViewController {
     func challengeGameOver() {
         //logic for ending game, displaying message, display play again and main menu buttons, display user ID
         //create array with information including longest correct chain, post it
-        level.updateProgress(seconds)
+        level.updateProgress(seconds, grade: grade)
         postProgress()
         self.scene.animateClearBoard() {
             self.completionTime = self.getTimeString(self.seconds)
@@ -795,11 +790,11 @@ class GameViewController: UIViewController {
     
     func postProgress() {
         
-        let url = NSURL(string: "http://avisss.com/recorddata.php?id=\(userID)&data=randomDataString")
+        let postString = level.getProgressString()
+        let url = NSURL(string: "http://avisss.com/recorddata.php?id=\(userID)&data=\(postString)")
         let request = NSMutableURLRequest(URL: url!)
         request.HTTPMethod = "POST"
-
-        let postString = level.getProgressString()
+        
         //print(postString)
         request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
         

@@ -558,6 +558,7 @@ class GameScene: SKScene {
         }
         //wait for all numbers to move before allowing gameplay to continue
         runAction(SKAction.waitForDuration(longestDuration), completion: completion)
+        
     }
     
     func animateNewDrop(numbers: Set<Number>, completion: () -> ()) {

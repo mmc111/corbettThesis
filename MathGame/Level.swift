@@ -14,8 +14,9 @@ let NumCol = 7
 let NumRow = 10
 var levelNum: Int = -1 //testing addition
 
-var progress = [[Int]]()
+var progress = ""
 var score: Int = 0
+var opStr = "default"
 
 var difficulty: Int = 1 //need to change this dynamically throughout gameplay, default difficulty is one
 var randRange: UInt32 = 5 //randrange is the max result value/ max value on board, initialized to first difficulty1
@@ -60,6 +61,7 @@ let fixedLevel = 2
 let challengeLevel = 3
 
 var userID = 1
+var updateCount = 0
 
 var challengeModeHighScore = 0
 
@@ -88,29 +90,36 @@ class Level {
         switch levelNum{
         case -1:
             op = Number(col: 2, row: 2, value: -1, numberType: NumberType.AddOperator, prevY: -1)
+            opStr = "add"
         case -2:
             op = Number(col: 2, row: 2, value: -2, numberType: NumberType.SubOperator, prevY: -2)
+            opStr = "sub"
         case -3:
             op = Number(col: 2, row: 2, value: -3, numberType: NumberType.MultOperator, prevY: -3)
+            opStr = "mult"
         case -4:
             op = Number(col: 2, row: 2, value: -4, numberType: NumberType.DivOperator, prevY: -4)
-            
+            opStr = "div"
         case -5: //challenge mode level 1, addition and subtraction
             op = Number(col: 2, row: 2, value: -1, numberType: NumberType.AddOperator, prevY: -1)
             op1 = Number(col: 2, row: 3, value: -2, numberType: NumberType.SubOperator, prevY: -2)
+            opStr = "addAndSub"
         case -6: //challenge mode level 2, multiplication and division
             op = Number(col: 2, row: 2, value: -3, numberType: NumberType.MultOperator, prevY: -3)
             op1 = Number(col: 2, row: 3, value: -4, numberType: NumberType.DivOperator, prevY: -4)
+            opStr = "multAndDiv"
         case -7: //final level in challenge mode, all operator types available
             op = Number(col: 2, row: 1, value: -1, numberType: NumberType.AddOperator, prevY: -1)
             op1 = Number(col: 2, row: 2, value: -2, numberType: NumberType.SubOperator, prevY: -2)
             op2 = Number(col: 2, row: 3, value: -3, numberType: NumberType.MultOperator, prevY: -3)
             op3 = Number(col: 2, row: 4, value: -4, numberType: NumberType.DivOperator, prevY: -4)
+            opStr = "all"
         default:
             op = Number(col: 2, row: 2, value: -1, numberType: NumberType.AddOperator, prevY: -1)
             op1 = Number(col: 2, row: 3, value: -2, numberType: NumberType.SubOperator, prevY: -2)
             op2 = Number(col: 2, row: 4, value: -3, numberType: NumberType.MultOperator, prevY: -3)
             op3 = Number(col: 2, row: 5, value: -4, numberType: NumberType.DivOperator, prevY: -4)
+            opStr = "default"
         }
         
         if levelNum > -7 {
@@ -959,6 +968,8 @@ class Level {
                 }
             }
         }
+        
+        setDifficulty(difficulty)
 
         return clearOp
     }
@@ -984,8 +995,8 @@ class Level {
         }
         
         correctChain = correctChain + 1
-        challengeCorrectChain = correctChain
-        
+        //challengeCorrectChain = correctChain
+        challengeCorrectChain = challengeCorrectChain + 1
         if correctChain > longestChain {
             longestChain = correctChain
         }
@@ -1015,19 +1026,26 @@ class Level {
         userID = newID
     }
     
-    func updateProgress(completionTime: Int) {
+    func updateProgress(completionTime: Int, grade: Int) {
+        updateCount = updateCount + 1
         var highestScore = 0
         if levelType == challengeLevel {
             highestScore = challengeModeHighScore
         } else {
             highestScore = highScore
         }
-        let currentProgress = [userID, levelNum, difficulty, correctTotal, longestChain, score, highestScore, completionTime]
-        progress.append(currentProgress)
+        //let currentProgress = [userID, levelNum, difficulty, correctTotal, longestChain, score, highestScore, completionTime]
+        let currentProgressStr = "[ID:\(userID),update:\(updateCount),level:\(levelNum),diff:\(difficulty),opType:\(opStr),correctTotal:\(correctTotal),longestChain:\(longestChain),score:\(score),highestScore:\(highestScore),time:\(completionTime)]" //,grade:\(grade)]"
+        if updateCount <= 1 {
+            progress = currentProgressStr
+        } else {
+           progress = "\(progress),\(currentProgressStr)"
+        }
     }
     
     func getProgressString() -> String {
-        let progressStr = "\(progress)"
+        //let progressStr = "\(progress)"
+        let progressStr = "[\(progress)]"
         return progressStr
     }
     
@@ -1086,6 +1104,7 @@ class Level {
     func updateIncorrect() {
         incorrectTotal = incorrectTotal + 1
         incorrectChain = incorrectChain + 1
+        correctChain = 0
         if currentRowsFilled == 8 {
             incorrectAtTop = incorrectAtTop + 1
         }
